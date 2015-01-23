@@ -1,0 +1,26 @@
+{
+    "name": "icecast-parser",
+    "version": "2.0.0",
+    "description": "NodeJS module for getting and parsing metadata from SHOUTcast/Icecast radio streams",
+    "main": "lib/index.js",
+    "scripts": {
+        "test": "mocha"
+    },
+    "keywords": [
+        "shoutcast",
+        "SHOUTcast",
+        "icecast",
+        "metadata",
+        "parser",
+        "radio",
+        "cli",
+        "internet",
+        "stream"
+    ],
+    "author": {
+        "name": "Eugene Obrezkov",
+        "email": "ghaiklor@gmail.com",
+        "url": "https://github.com/ghaiklor"
+    },
+    "license": "MIT"
+}
