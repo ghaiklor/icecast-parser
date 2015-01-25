@@ -11,7 +11,9 @@ describe('RadioParser', function () {
         var radio = new RadioParser('http://wrong-link.com');
         assert.equal(radio.getConfig('url'), 'http://wrong-link.com', 'Should properly set link');
 
-        radio.setConfig('url', 'http://streaming.radionomy.com/HammerHeadRadio');
+        radio.setConfig({
+            url: 'http://streaming.radionomy.com/HammerHeadRadio'
+        });
         assert.equal(radio.getConfig('url'), 'http://streaming.radionomy.com/HammerHeadRadio', 'Should properly set empty link');
     });
 
@@ -19,11 +21,12 @@ describe('RadioParser', function () {
         var radio = new RadioParser('http://streaming.radionomy.com/HammerHeadRadio');
 
         assert.deepEqual(radio.getConfig(), {
+            url: 'http://streaming.radionomy.com/HammerHeadRadio',
             keepListen: false,
             autoUpdate: true,
-            errorInterval: 5 * 60,
-            emptyInterval: 3 * 60,
-            metadataInterval: 10
+            errorInterval: 10 * 60,
+            emptyInterval: 5 * 60,
+            metadataInterval: 5
         }, 'Should properly set default config');
 
         radio.setConfig({
@@ -35,6 +38,7 @@ describe('RadioParser', function () {
         });
 
         assert.deepEqual(radio.getConfig(), {
+            url: 'http://streaming.radionomy.com/HammerHeadRadio',
             keepListen: true,
             autoUpdate: false,
             errorInterval: 1000,
