@@ -9,14 +9,13 @@ describe('StreamReader', function () {
 
     it('Should properly parse stream data', function (done) {
         var reader = new StreamReader(1),
-            data = "f\0a\0k\0e\u0001metadata\0\0\0\0\0\0\0\0 \0d\0a\0t\0a",
+            data = "f\0a\0k\0e\u0002StreamTitle='fake metadata'\0\0\0\0\0 \0d\0a\0t\0a",
             output = '',
             calledMetadata = false;
 
         reader.on('metadata', function (metadata) {
-            assert(Buffer.isBuffer(metadata), 'Metadata should be buffer');
-            assert.equal(metadata.length, 16, 'Length of metadata should be 16');
-            assert.equal(metadata.toString('utf8'), 'metadata\0\0\0\0\0\0\0\0', 'Metadata should get successfully');
+            assert.equal(Object.prototype.toString.call(metadata), '[object Object]', 'Should be an object');
+            assert.equal(metadata.StreamTitle, 'fake metadata', 'Should properly parse metadata');
             calledMetadata = true;
         });
 
