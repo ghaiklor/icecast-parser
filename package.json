@@ -17,11 +17,20 @@
         "internet",
         "stream"
     ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/ghaiklor/icecast-parser.git"
+    },
     "author": {
         "name": "Eugene Obrezkov",
         "email": "ghaiklor@gmail.com",
         "url": "https://github.com/ghaiklor"
     },
+    "bugs": {
+        "url": "https://github.com/ghaiklor/icecast-parser/issues",
+        "email": "ghaiklor@gmail.com"
+    },
+    "homepage": "https://github.com/ghaiklor/icecast-parser",
     "license": "MIT",
     "devDependencies": {
         "mocha": "^2.1.0"
