@@ -14,7 +14,7 @@ describe('StreamReader', function () {
             calledMetadata = false;
 
         reader.on('metadata', function (metadata) {
-            assert.equal(Object.prototype.toString.call(metadata), '[object Object]', 'Should be an object');
+            assert.equal(Object.prototype.toString.call(metadata), '[object Object]', 'Parsed metadata should be an object');
             assert.equal(metadata.StreamTitle, 'fake metadata', 'Should properly parse metadata');
             calledMetadata = true;
         });
@@ -25,7 +25,7 @@ describe('StreamReader', function () {
 
         reader.on('end', function () {
             assert(calledMetadata, 'Metadata event should triggering');
-            assert.equal(output, 'fake data', 'Output should be equal to source fake data');
+            assert.equal(output, 'fake data', 'Output should be equal to source fake data without metadata');
             done();
         });
 

@@ -7,16 +7,6 @@ describe('RadioParser', function () {
         assert(radio instanceof RadioParser, 'Should be instance of RadioParser');
     });
 
-    it('Should properly get/set link', function () {
-        var radio = new RadioParser('http://wrong-link.com');
-        assert.equal(radio.getConfig('url'), 'http://wrong-link.com', 'Should properly set link');
-
-        radio.setConfig({
-            url: 'http://streaming.radionomy.com/HammerHeadRadio'
-        });
-        assert.equal(radio.getConfig('url'), 'http://streaming.radionomy.com/HammerHeadRadio', 'Should properly set empty link');
-    });
-
     it('Should properly get/set config', function () {
         var radio = new RadioParser('http://streaming.radionomy.com/HammerHeadRadio');
 
@@ -30,11 +20,25 @@ describe('RadioParser', function () {
         }, 'Should properly set default config');
 
         radio.setConfig({
+            url: 'http://another-link.com',
             keepListen: true,
             autoUpdate: false,
             errorInterval: 1000,
             emptyInterval: 900,
             metadataInterval: 800
+        });
+
+        assert.deepEqual(radio.getConfig(), {
+            url: 'http://another-link.com',
+            keepListen: true,
+            autoUpdate: false,
+            errorInterval: 1000,
+            emptyInterval: 900,
+            metadataInterval: 800
+        }, 'Should properly update config');
+
+        radio.setConfig({
+            url: 'http://streaming.radionomy.com/HammerHeadRadio'
         });
 
         assert.deepEqual(radio.getConfig(), {
@@ -44,7 +48,7 @@ describe('RadioParser', function () {
             errorInterval: 1000,
             emptyInterval: 900,
             metadataInterval: 800
-        }, 'Should properly update config');
+        }, 'Should properly make particular update');
 
         assert.equal(radio.getConfig('keepListen'), true, 'Should properly get value from config by key');
     });
