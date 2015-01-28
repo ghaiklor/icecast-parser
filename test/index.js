@@ -53,11 +53,26 @@ describe('RadioParser', function () {
         assert.equal(radio.getConfig('keepListen'), true, 'Should properly get value from config by key');
     });
 
-    it('Should properly emit metadata', function (done) {
+    it('Should properly emit metadata from Icecast', function (done) {
+        this.timeout(5000);
+
         var radio = new RadioParser('http://streaming.radionomy.com/HammerHeadRadio');
         radio.on('metadata', function (metadata) {
             assert.equal(typeof metadata, 'object', 'Metadata should be object');
             assert.equal(typeof metadata.StreamTitle, 'string', 'StreamTitle should be string');
+            console.log('Icecast -> ' + metadata.StreamTitle);
+            done();
+        });
+    });
+
+    it('Should properly emit metadata from ShoutCAST', function (done) {
+        this.timeout(5000);
+
+        var radio = new RadioParser('http://173.245.94.221/;?icy=http');
+        radio.on('metadata', function (metadata) {
+            assert.equal(typeof metadata, 'object', 'Metadata should be object');
+            assert.equal(typeof metadata.StreamTitle, 'string', 'StreamTitle should be string');
+            console.log('ShoutCAST -> ' + metadata.StreamTitle);
             done();
         });
     });
