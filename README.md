@@ -4,11 +4,11 @@ NodeJS module for getting and parsing metadata from SHOUTcast/Icecast radio stre
 
 ## Features
 - Opens async connection to URL and gets response with radio stream and metadata. Then pipes response to Transform stream for processing;
-- Getting metadata from stream is realized in Transform stream, so you can pipe radio station stream to another Writeable\Duplex\Transform stream;
-- Once metadata is recieved, `metadata` event triggers with metadata object;
+- Getting metadata from stream is realized in Transform stream, so you can pipe radio station stream to another Writable\Duplex\Transform stream;
+- Once metadata is received, `metadata` event triggers with metadata object;
 - After metadata is received, connection to radio station closes automatically, so you will not spent a lot of traffic;
 - But you can set `keepListen` flag in config object and continue listening radio station;
-- Autoupdating metadata from radiostation by interval in economical way (connection is opens when time has come);
+- Auto updating metadata from radio station by interval in economical way (connection is opens when time has come);
 - Metadata parsed as object with key-value;
 - When you create new instance, you get EventEmitter. So you can subscribe to other events;
 - Easy to configure and use;
@@ -37,9 +37,9 @@ You can provide additional parameters to constructor:
 - `url` - by default empty and **REQUIRED**.
 - `keepListen` - by default `false`. If you set to `true`, then response from radio station is not destroys and you can pipe it to another streams.
 - `autoUpdate` - by default `true`. If you set to `false`, then metadata will not be updates with interval and notify you about new metadata;
-- `errorInterval` - by default `300` s. You can set interval in seconds when next try will be executed if connection was refused or rejected. Works only if `autoUpdate` is enabled.
-- `emptyInterval` - by default `180` s. You can set interval in seconds when next try will be executed if metadata is empty. Works only if `autoUpdate` is enabled.
-- `metadataInterval` - by default `10` s. You can set interval in seconds when will be next update of metadata. Works only if `autoUpdate` is enabled.
+- `errorInterval` - by default `600` s. You can set interval in seconds when next try will be executed if connection was refused or rejected. Works only if `autoUpdate` is enabled.
+- `emptyInterval` - by default `300` s. You can set interval in seconds when next try will be executed if metadata is empty. Works only if `autoUpdate` is enabled.
+- `metadataInterval` - by default `5` s. You can set interval in seconds when will be next update of metadata. Works only if `autoUpdate` is enabled.
 
 ```javascript
 var Parser = require('icecast-parser');
@@ -48,9 +48,9 @@ var radioStation = new Parser({
     url: 'http://streaming.radionomy.com/HammerHeadRadio', // URL to radio station
     keepListen: false, // don't listen radio station after metadata was received
     autoUpdate: true, // update metadata after interval
-    errorInterval: 5 * 60, // retry connection after 5 minutes
-    emptyInterval: 3 * 60, // retry get metadata after 3 minutes
-    metadataInterval: 10 // update metadata after 10 seconds
+    errorInterval: 10 * 60, // retry connection after 10 minutes
+    emptyInterval: 5 * 60, // retry get metadata after 5 minutes
+    metadataInterval: 5 // update metadata after 5 seconds
 });
 
 radioStation.on('metadata', function(metadata) {
@@ -64,7 +64,7 @@ radioStation.on('metadata', function(metadata) {
 You can subscribe to 4 events - `error`, `empty`, `metadata`, `stream`.
 
 - `error` event triggers when connection to radio station was refused, rejected or timed out;
-- `empty` event triggers when connection was established successful, but radio station returns empty metadata;
+- `empty` event triggers when connection was established successful, but radio station doesn't return metaint byte in response headers;
 - `metadata` event triggers when connection was established successful and metadata is parsed successful;
 - `stream` event triggers when response from radio station returned and successfully piped to Transform stream.
 
@@ -76,7 +76,7 @@ var radioStation = new Parser({
     keepListen: true
 });
 
-radioStation.on('error', function() {
+radioStation.on('error', function(error) {
     console.log(['Connection to', this.getConfig('url'), 'was rejected'].join(' '));
 });
 
