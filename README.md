@@ -1,4 +1,17 @@
-# icecast-parser [![npm version](https://badge.fury.io/js/icecast-parser.svg)](http://badge.fury.io/js/icecast-parser) [![Build Status](https://travis-ci.org/ghaiklor/icecast-parser.svg)](https://travis-ci.org/ghaiklor/icecast-parser) [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/ghaiklor/icecast-parser?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+# icecast-parser
+
+![Build Status](https://img.shields.io/travis/ghaiklor/icecast-parser.svg)
+![Coverage](https://img.shields.io/coveralls/ghaiklor/icecast-parser.svg)
+
+![Downloads](https://img.shields.io/npm/dm/icecast-parser.svg)
+![Downloads](https://img.shields.io/npm/dt/icecast-parser.svg)
+![npm version](https://img.shields.io/npm/v/icecast-parser.svg)
+![License](https://img.shields.io/npm/l/icecast-parser.svg)
+
+[![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release)
+[![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
+![dependencies](https://img.shields.io/david/ghaiklor/icecast-parser.svg)
+![dev dependencies](https://img.shields.io/david/dev/ghaiklor/icecast-parser.svg)
 
 NodeJS module for getting and parsing metadata from SHOUTcast/Icecast radio streams.
 
@@ -22,9 +35,9 @@ npm install icecast-parser
 
 Get your first metadata from radio station.
 ```javascript
-var Parser = require('icecast-parser');
+const Parser = require('icecast-parser');
 
-var radioStation = new Parser('http://streaming.radionomy.com/HammerHeadRadio');
+const radioStation = new Parser('http://streaming.radionomy.com/HammerHeadRadio');
 radioStation.on('metadata', function(metadata) {
     console.log([metadata.StreamTitle, 'is playing on', this.getConfig('url')].join(' '));
 });
@@ -42,9 +55,9 @@ You can provide additional parameters to constructor:
 - `metadataInterval` - by default `5` s. You can set interval in seconds when will be next update of metadata. Works only if `autoUpdate` is enabled.
 
 ```javascript
-var Parser = require('icecast-parser');
+const Parser = require('icecast-parser');
 
-var radioStation = new Parser({
+const radioStation = new Parser({
     url: 'http://streaming.radionomy.com/HammerHeadRadio', // URL to radio station
     keepListen: false, // don't listen radio station after metadata was received
     autoUpdate: true, // update metadata after interval
@@ -69,9 +82,9 @@ You can subscribe to 4 events - `error`, `empty`, `metadata`, `stream`.
 - `stream` event triggers when response from radio station returned and successfully piped to Transform stream.
 
 ```javascript
-var Parser = require('icecast-parser');
+const Parser = require('icecast-parser');
 
-var radioStation = new Parser({
+const radioStation = new Parser({
     url: 'http://streaming.radionomy.com/HammerHeadRadio'
     keepListen: true
 });
@@ -101,9 +114,9 @@ When connection is established, parser is sending stream as first argument to yo
 **Note:** You **MUST** enable `keepListen` in configuration object.
 
 ```javascript
-var Parser = require('icecast-parser');
+const Parser = require('icecast-parser');
 
-var radioStation = new Parser({
+const radioStation = new Parser({
     url: 'http://streaming.radionomy.com/HammerHeadRadio',
     keepListen: true // keep listening radio station
 });
@@ -117,7 +130,7 @@ radioStation.on('stream', function(stream) {
 
 The MIT License (MIT)
 
-Copyright (c) 2015 Eugene Obrezkov
+Copyright (c) 2016 Eugene Obrezkov
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

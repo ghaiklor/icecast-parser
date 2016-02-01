@@ -1,38 +1,61 @@
 {
-    "name": "icecast-parser",
-    "version": "2.0.0",
-    "description": "NodeJS module for getting and parsing metadata from SHOUTcast/Icecast radio streams",
-    "main": "lib/index.js",
-    "scripts": {
-        "test": "mocha"
-    },
-    "keywords": [
-        "shoutcast",
-        "SHOUTcast",
-        "icecast",
-        "metadata",
-        "parser",
-        "radio",
-        "cli",
-        "internet",
-        "stream"
-    ],
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/ghaiklor/icecast-parser.git"
-    },
-    "author": {
-        "name": "Eugene Obrezkov",
-        "email": "ghaiklor@gmail.com",
-        "url": "https://github.com/ghaiklor"
-    },
-    "bugs": {
-        "url": "https://github.com/ghaiklor/icecast-parser/issues",
-        "email": "ghaiklor@gmail.com"
-    },
-    "homepage": "https://github.com/ghaiklor/icecast-parser",
-    "license": "MIT",
-    "devDependencies": {
-        "mocha": "^2.1.0"
+  "name": "icecast-parser",
+  "description": "NodeJS module for getting and parsing metadata from SHOUTcast/Icecast radio streams",
+  "main": "lib/index.js",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ghaiklor/icecast-parser.git"
+  },
+  "author": {
+    "name": "Eugene Obrezkov",
+    "email": "ghaiklor@gmail.com",
+    "url": "http://ghaiklor.com/"
+  },
+  "bugs": {
+    "url": "https://github.com/ghaiklor/icecast-parser/issues",
+    "email": "ghaiklor@gmail.com"
+  },
+  "homepage": "https://github.com/ghaiklor/icecast-parser",
+  "keywords": [
+    "shoutcast",
+    "SHOUTcast",
+    "icecast",
+    "metadata",
+    "parser",
+    "radio",
+    "cli",
+    "internet",
+    "stream"
+  ],
+  "scripts": {
+    "compile": "babel src --out-dir lib",
+    "coveralls": "cat coverage/lcov.info | coveralls",
+    "prepublish": "npm run compile",
+    "semantic-release": "semantic-release pre && npm publish && semantic-release post",
+    "test": "babel-node ./node_modules/.bin/isparta cover _mocha"
+  },
+  "devDependencies": {
+    "babel-cli": "6.4.5",
+    "babel-plugin-add-module-exports": "0.1.2",
+    "babel-preset-es2015": "6.3.13",
+    "chai": "3.5.0",
+    "coveralls": "2.11.6",
+    "cz-conventional-changelog": "^1.1.5",
+    "isparta": "4.0.0",
+    "mocha": "2.4.5",
+    "semantic-release": "4.3.5",
+    "sinon": "1.17.3"
+  },
+  "publishConfig": {
+    "tag": "latest"
+  },
+  "release": {
+    "branch": "master"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
     }
+  }
 }
