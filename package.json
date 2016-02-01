@@ -1,5 +1,6 @@
 {
   "name": "icecast-parser",
+  "version": "0.0.0-semantic-release",
   "description": "NodeJS module for getting and parsing metadata from SHOUTcast/Icecast radio streams",
   "main": "lib/index.js",
   "license": "MIT",
@@ -47,15 +48,15 @@
     "semantic-release": "4.3.5",
     "sinon": "1.17.3"
   },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  },
   "publishConfig": {
     "tag": "latest"
   },
   "release": {
     "branch": "master"
-  },
-  "config": {
-    "commitizen": {
-      "path": "./node_modules/cz-conventional-changelog"
-    }
   }
 }

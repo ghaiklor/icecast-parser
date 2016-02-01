@@ -16,6 +16,7 @@
 NodeJS module for getting and parsing metadata from SHOUTcast/Icecast radio streams.
 
 ## Features
+
 - Opens async connection to URL and gets response with radio stream and metadata. Then pipes response to Transform stream for processing;
 - Getting metadata from stream is realized in Transform stream, so you can pipe radio station stream to another Writable\Duplex\Transform stream;
 - Once metadata is received, `metadata` event triggers with metadata object;
@@ -38,6 +39,7 @@ Get your first metadata from radio station.
 const Parser = require('icecast-parser');
 
 const radioStation = new Parser('http://streaming.radionomy.com/HammerHeadRadio');
+
 radioStation.on('metadata', function(metadata) {
     console.log([metadata.StreamTitle, 'is playing on', this.getConfig('url')].join(' '));
 });

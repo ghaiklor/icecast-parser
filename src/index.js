@@ -1,0 +1,199 @@
+import http from 'http';
+import util from 'util';
+import { EventEmitter } from 'events';
+import StreamReader from './StreamReader';
+
+/**
+ * Default options
+ * @description :: Default configuration object for RadioParser
+ * @type {Object}
+ * @private
+ */
+const DEFAULT_OPTIONS = {
+  keepListen: false,
+  autoUpdate: true,
+  errorInterval: 10 * 60,
+  emptyInterval: 5 * 60,
+  metadataInterval: 5
+};
+
+export default class RadioParser extends EventEmitter {
+  /**
+   * RadioParser class
+   * @param {Object|String} options Configuration object or string with radio station URL
+   * @constructor
+   */
+  constructor(options) {
+    super();
+
+    if (typeof options === 'string') {
+      this.setConfig({
+        url: options
+      });
+    } else {
+      this.setConfig(options);
+    }
+
+    this.queueRequest();
+  }
+
+  /**
+   * When request to radio station is successful this function is called
+   * @param response
+   * @returns {RadioParser}
+   * @private
+   */
+  _onRequestResponse(response) {
+    var self = this,
+      icyMetaInt = response.headers['icy-metaint'];
+
+    if (icyMetaInt) {
+      var reader = new StreamReader(icyMetaInt);
+      reader.on('metadata', function (metadata) {
+        self._destroyResponse(response);
+        self._queueNextRequest(self.getConfig('metadataInterval'));
+        self.emit('metadata', metadata);
+      });
+      response.pipe(reader);
+      self.emit('stream', reader);
+    } else {
+      self._destroyResponse(response);
+      self._queueNextRequest(self.getConfig('emptyInterval'));
+      self.emit('empty');
+    }
+
+    return this;
+  }
+
+  /**
+   * Called when socket connection is appears in request
+   * @param socket
+   * @returns {RadioParser}
+   * @private
+   */
+  _onSocketResponse(socket) {
+    var HTTP10 = new Buffer('HTTP/1.0'),
+      socketOnData = socket.ondata;
+
+    function onData(chunk) {
+      if (/icy/i.test(chunk.slice(0, 3))) {
+        var result = new Buffer(chunk.length - 'icy'.length + HTTP10.length),
+          targetStart = HTTP10.copy(result);
+
+        chunk.copy(result, targetStart, 3);
+        chunk = result;
+      }
+
+      return chunk;
+    }
+
+    socket.ondata = function (buffer, start, length) {
+      var chunk = onData(buffer.slice(start, length));
+
+      socket.ondata = socketOnData;
+      socket.ondata(chunk, 0, chunk.length);
+    };
+
+    return this;
+  }
+
+  /**
+   * Called when some error in request is appears
+   * @param error
+   * @returns {RadioParser}
+   * @private
+   */
+  _onRequestError(error) {
+    this._queueNextRequest(this.getConfig('errorInterval'));
+    this.emit('error', error);
+    return this;
+  }
+
+  /**
+   * Make request to radio station and get stream
+   * @private
+   */
+  _makeRequest() {
+    var request = http.request(this.getConfig('url'));
+    request.setHeader('Icy-MetaData', '1');
+    request.setHeader('User-Agent', 'Mozilla');
+    request.once('response', this._onRequestResponse.bind(this));
+    request.once('socket', this._onSocketResponse.bind(this));
+    request.once('error', this._onRequestError.bind(this));
+    request.end();
+
+    return this;
+  }
+
+  /**
+   * Check if response can be destroyed
+   * @param {IncomingMessage} response
+   * @returns {RadioParser}
+   * @private
+   */
+  _destroyResponse(response) {
+    if (!this.getConfig('keepListen')) {
+      response.destroy();
+    }
+
+    return this;
+  }
+
+  /**
+   * Queue next request with checking if next request is needed
+   * @param {Number} [timeout] Timeout in seconds for next request
+   * @returns {RadioParser}
+   * @private
+   */
+  _queueNextRequest(timeout) {
+    timeout = timeout || this.getConfig('errorInterval');
+
+    if (this.getConfig('autoUpdate') && !this.getConfig('keepListen')) {
+      this.queueRequest(timeout);
+    }
+
+    return this;
+  }
+
+  /**
+   * Queue request to radio station after some time
+   * @param {Number} [timeout] Timeout in seconds
+   * @returns {RadioParser}
+   */
+  queueRequest(timeout) {
+    timeout = timeout || 0;
+
+    setTimeout(this._makeRequest.bind(this), timeout * 1000);
+
+    return this;
+  }
+
+  /**
+   * Get configuration object or configuration value by key
+   * @param {String} [key] Key name
+   * @returns {*} Returns appropriate value by key or configuration object
+   */
+  getConfig(key) {
+    if (key) {
+      return this._config[key];
+    } else {
+      return this._config;
+    }
+  }
+
+  /**
+   * Set configuration object or set configuration key with new value
+   * @param {Object} config New configuration object
+   * @returns {RadioParser}
+   */
+  setConfig(config) {
+    if (!this._config) {
+      var defaultConfig = _extend({}, DEFAULT_OPTIONS);
+      this._config = _extend(defaultConfig, config);
+    } else {
+      this._config = _extend(this._config, config);
+    }
+
+    return this;
+  }
+}
