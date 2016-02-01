@@ -65,37 +65,6 @@ export default class RadioParser extends EventEmitter {
   }
 
   /**
-   * Called when socket connection is appears in request
-   * @param socket
-   * @returns {RadioParser}
-   * @private
-   */
-  _onSocketResponse(socket) {
-    const HTTP10 = new Buffer('HTTP/1.0');
-    const socketOnData = socket.ondata;
-    const onData = chunk => {
-      if (/icy/i.test(chunk.slice(0, 3))) {
-        const result = new Buffer(chunk.length - 'icy'.length + HTTP10.length);
-        const targetStart = HTTP10.copy(result);
-
-        chunk.copy(result, targetStart, 3);
-        chunk = result;
-      }
-
-      return chunk;
-    };
-
-    socket.ondata = (buffer, start, length) => {
-      const chunk = onData(buffer.slice(start, length));
-
-      socket.ondata = socketOnData;
-      socket.ondata(chunk, 0, chunk.length);
-    };
-
-    return this;
-  }
-
-  /**
    * Called when some error in request is appears
    * @param error
    * @returns {RadioParser}
@@ -117,7 +86,6 @@ export default class RadioParser extends EventEmitter {
     request.setHeader('Icy-MetaData', '1');
     request.setHeader('User-Agent', 'Mozilla');
     request.once('response', this._onRequestResponse.bind(this));
-    request.once('socket', this._onSocketResponse.bind(this));
     request.once('error', this._onRequestError.bind(this));
     request.end();
 
