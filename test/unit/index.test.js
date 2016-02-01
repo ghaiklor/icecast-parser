@@ -2,8 +2,13 @@ import { assert } from 'chai';
 import RadioParser from '../../src/index';
 
 describe('RadioParser', () => {
-  it('Should create new instance', () => {
+  it('Should properly create new instance', () => {
     const radio = new RadioParser('http://streaming.radionomy.com/HammerHeadRadio');
+    assert.instanceOf(radio, RadioParser);
+  });
+
+  it('Should properly create new instance with options', () => {
+    const radio = new RadioParser({url: 'http://streaming.radionomy.com/HammerHeadRadio'});
     assert.instanceOf(radio, RadioParser);
   });
 

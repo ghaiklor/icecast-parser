@@ -105,11 +105,11 @@ export default class RadioParser extends EventEmitter {
 
   /**
    * Queue next request with checking if next request is needed
-   * @param {Number} [timeout] Timeout in seconds for next request
+   * @param {Number} timeout Timeout in seconds for next request
    * @returns {RadioParser}
    * @private
    */
-  _queueNextRequest(timeout = this.getConfig('errorInterval')) {
+  _queueNextRequest(timeout) {
     if (this.getConfig('autoUpdate') && !this.getConfig('keepListen')) this.queueRequest(timeout);
     return this;
   }

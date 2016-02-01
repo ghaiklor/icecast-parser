@@ -2,7 +2,7 @@ import { assert } from 'chai';
 import StreamReader from '../../src/StreamReader';
 
 describe('StreamReader', () => {
-  it('Should instantiate reader', () => {
+  it('Should properly instantiate reader', () => {
     const reader = new StreamReader(1);
     assert.instanceOf(reader, StreamReader);
   });
