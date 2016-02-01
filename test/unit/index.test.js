@@ -54,20 +54,7 @@ describe('RadioParser', () => {
   });
 
   it('Should properly emit metadata from Icecast', done => {
-    this.timeout(5000);
-
-    const radio = new RadioParser('http://streaming.radionomy.com/HammerHeadRadio');
-    radio.on('metadata', metadata => {
-      assert.isObject(metadata);
-      assert.isString(metadata.StreamTitle);
-      done();
-    });
-  });
-
-  it('Should properly emit metadata from ShoutCAST', done => {
-    this.timeout(5000);
-
-    const radio = new RadioParser('http://173.245.94.221/;?icy=http');
+    const radio = new RadioParser('http://streaming.radionomy.com/Elium-Rock');
     radio.on('metadata', metadata => {
       assert.isObject(metadata);
       assert.isString(metadata.StreamTitle);
