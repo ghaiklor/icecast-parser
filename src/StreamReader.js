@@ -57,8 +57,8 @@ const _parseMetadata = metadata => {
  * @returns {Function} Returns trampolined function
  * @private
  */
-const _trampoline = fn => {
-  return () => {
+const _trampoline = function (fn) {
+  return function () {
     let result = fn.apply(this, arguments);
     while (typeof result === 'function') result = result();
     return result;
