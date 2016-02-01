@@ -130,11 +130,7 @@ export default class RadioParser extends EventEmitter {
    * @returns {*} Returns appropriate value by key or configuration object
    */
   getConfig(key) {
-    if (key) {
-      return this._config[key];
-    } else {
-      return this._config;
-    }
+    return key ? this._config[key] : this._config;
   }
 
   /**
