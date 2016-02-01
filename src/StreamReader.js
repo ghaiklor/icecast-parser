@@ -2,78 +2,6 @@ import util from 'util';
 import { Transform } from 'stream';
 
 /**
- * Parse metadata to object
- * @param {Buffer|String} metadata Buffer or string with metadata information
- * @returns {Object}
- * @private
- */
-function _parseMetadata(metadata) {
-  const data = Buffer.isBuffer(metadata) ? metadata.toString('utf8') : metadata || '';
-  const result = {};
-
-  data.replace(/\0*$/, '').split(';').forEach(item => {
-    item = item.split(/\=['"]/);
-    result[item[0]] = String(item[1]).replace(/['"]$/, '');
-  });
-
-  return result;
-}
-
-/**
- * Helper method that returns trampolined function
- * @param {Function} fn Function that need to trampoline
- * @returns {Function} Returns trampolined function
- * @private
- */
-function _trampoline(fn) {
-  return function () {
-    let result = fn.apply(this, arguments);
-
-    while (typeof result === 'function') result = result();
-
-    return result;
-  };
-}
-
-/**
- * Process one chunk of data
- * @param {StreamReader} stream StreamReader instance
- * @param {Buffer} chunk Chunk of data
- * @param {Function} done Triggers when processing is done
- * @returns {Function}
- * @private
- */
-function _processData(stream, chunk, done) {
-  stream._bytesLeft -= chunk.length;
-
-  if (stream._currentState === BUFFERING_STATE) {
-    stream._buffers.push(chunk);
-    stream._buffersLength += chunk.length;
-  } else if (stream._currentState === PASSTHROUGH_STATE) {
-    stream.push(chunk);
-  }
-
-  if (stream._bytesLeft === 0) {
-    let cb = stream._callback;
-
-    if (cb && stream._currentState === BUFFERING_STATE && stream._buffers.length > 1) {
-      chunk = Buffer.concat(stream._buffers, stream._buffersLength);
-    } else if (stream._currentState !== BUFFERING_STATE) {
-      chunk = null;
-    }
-
-    stream._currentState = INIT_STATE;
-    stream._callback = null;
-    stream._buffers.splice(0);
-    stream._buffersLength = 0;
-
-    cb.call(stream, chunk);
-  }
-
-  return done;
-}
-
-/**
  * "Init" state
  * @description :: State which indicates that StreamReader is initializing
  * @type {Number}
@@ -106,6 +34,76 @@ const PASSTHROUGH_STATE = 3;
 const METADATA_BLOCK_SIZE = 16;
 
 /**
+ * Parse metadata to object
+ * @param {Buffer|String} metadata Buffer or string with metadata information
+ * @returns {Object}
+ * @private
+ */
+const _parseMetadata = metadata => {
+  const data = Buffer.isBuffer(metadata) ? metadata.toString('utf8') : metadata || '';
+  const result = {};
+
+  data.replace(/\0*$/, '').split(';').forEach(item => {
+    item = item.split(/\=['"]/);
+    result[item[0]] = String(item[1]).replace(/['"]$/, '');
+  });
+
+  return result;
+};
+
+/**
+ * Helper method that returns trampolined function
+ * @param {Function} fn Function that need to trampoline
+ * @returns {Function} Returns trampolined function
+ * @private
+ */
+const _trampoline = fn => {
+  return () => {
+    let result = fn.apply(this, arguments);
+    while (typeof result === 'function') result = result();
+    return result;
+  };
+};
+
+/**
+ * Process one chunk of data
+ * @param {StreamReader} stream StreamReader instance
+ * @param {Buffer} chunk Chunk of data
+ * @param {Function} done Triggers when processing is done
+ * @returns {Function}
+ * @private
+ */
+const _processData = (stream, chunk, done) => {
+  stream._bytesLeft -= chunk.length;
+
+  if (stream._currentState === BUFFERING_STATE) {
+    stream._buffers.push(chunk);
+    stream._buffersLength += chunk.length;
+  } else if (stream._currentState === PASSTHROUGH_STATE) {
+    stream.push(chunk);
+  }
+
+  if (stream._bytesLeft === 0) {
+    const cb = stream._callback;
+
+    if (cb && stream._currentState === BUFFERING_STATE && stream._buffers.length > 1) {
+      chunk = Buffer.concat(stream._buffers, stream._buffersLength);
+    } else if (stream._currentState !== BUFFERING_STATE) {
+      chunk = null;
+    }
+
+    stream._currentState = INIT_STATE;
+    stream._callback = null;
+    stream._buffers.splice(0);
+    stream._buffersLength = 0;
+
+    cb.call(stream, chunk);
+  }
+
+  return done;
+};
+
+/**
  * Function to which sends all data from `_transform` function
  * @param {StreamReader} stream StreamReader instance
  * @param {Buffer} chunk Chunk of data
@@ -113,22 +111,17 @@ const METADATA_BLOCK_SIZE = 16;
  * @type {Function}
  * @private
  */
-const _onData = _trampoline(function _onData(stream, chunk, done) {
+const _onData = _trampoline((stream, chunk, done) => {
   if (chunk.length <= stream._bytesLeft) {
-    return function () {
-      return _processData(stream, chunk, done);
-    };
+    return () => _processData(stream, chunk, done);
   } else {
-    return function () {
+    return () => {
       const buffer = chunk.slice(0, stream._bytesLeft);
 
-      return _processData(stream, buffer, function (error) {
+      return _processData(stream, buffer, error => {
         if (error) return done(error);
-
         if (chunk.length > buffer.length) {
-          return function () {
-            return _onData(stream, chunk.slice(buffer.length), done);
-          };
+          return () => _onData(stream, chunk.slice(buffer.length), done);
         }
       });
     };
@@ -219,7 +212,7 @@ export default class StreamReader extends Transform {
    * @private
    */
   _onMetaSectionLengthByte(chunk) {
-    var length = chunk[0] * METADATA_BLOCK_SIZE;
+    const length = chunk[0] * METADATA_BLOCK_SIZE;
 
     if (length > 0) {
       this._bytes(length, this._onMetaData);

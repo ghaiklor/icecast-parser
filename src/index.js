@@ -1,6 +1,6 @@
 import http from 'http';
 import util from 'util';
-import { EventEmitter } from 'events';
+import EventEmitter from 'events';
 import StreamReader from './StreamReader';
 
 /**
@@ -27,9 +27,7 @@ export default class RadioParser extends EventEmitter {
     super();
 
     if (typeof options === 'string') {
-      this.setConfig({
-        url: options
-      });
+      this.setConfig({url: options});
     } else {
       this.setConfig(options);
     }
@@ -44,22 +42,23 @@ export default class RadioParser extends EventEmitter {
    * @private
    */
   _onRequestResponse(response) {
-    var self = this,
-      icyMetaInt = response.headers['icy-metaint'];
+    const icyMetaInt = response.headers['icy-metaint'];
 
     if (icyMetaInt) {
-      var reader = new StreamReader(icyMetaInt);
-      reader.on('metadata', function (metadata) {
-        self._destroyResponse(response);
-        self._queueNextRequest(self.getConfig('metadataInterval'));
-        self.emit('metadata', metadata);
+      const reader = new StreamReader(icyMetaInt);
+
+      reader.on('metadata', metadata => {
+        this._destroyResponse(response);
+        this._queueNextRequest(this.getConfig('metadataInterval'));
+        this.emit('metadata', metadata);
       });
+
       response.pipe(reader);
-      self.emit('stream', reader);
+      this.emit('stream', reader);
     } else {
-      self._destroyResponse(response);
-      self._queueNextRequest(self.getConfig('emptyInterval'));
-      self.emit('empty');
+      this._destroyResponse(response);
+      this._queueNextRequest(this.getConfig('emptyInterval'));
+      this.emit('empty');
     }
 
     return this;
@@ -72,23 +71,22 @@ export default class RadioParser extends EventEmitter {
    * @private
    */
   _onSocketResponse(socket) {
-    var HTTP10 = new Buffer('HTTP/1.0'),
-      socketOnData = socket.ondata;
-
-    function onData(chunk) {
+    const HTTP10 = new Buffer('HTTP/1.0');
+    const socketOnData = socket.ondata;
+    const onData = chunk => {
       if (/icy/i.test(chunk.slice(0, 3))) {
-        var result = new Buffer(chunk.length - 'icy'.length + HTTP10.length),
-          targetStart = HTTP10.copy(result);
+        const result = new Buffer(chunk.length - 'icy'.length + HTTP10.length);
+        const targetStart = HTTP10.copy(result);
 
         chunk.copy(result, targetStart, 3);
         chunk = result;
       }
 
       return chunk;
-    }
+    };
 
-    socket.ondata = function (buffer, start, length) {
-      var chunk = onData(buffer.slice(start, length));
+    socket.ondata = (buffer, start, length) => {
+      const chunk = onData(buffer.slice(start, length));
 
       socket.ondata = socketOnData;
       socket.ondata(chunk, 0, chunk.length);
@@ -114,7 +112,8 @@ export default class RadioParser extends EventEmitter {
    * @private
    */
   _makeRequest() {
-    var request = http.request(this.getConfig('url'));
+    const request = http.request(this.getConfig('url'));
+
     request.setHeader('Icy-MetaData', '1');
     request.setHeader('User-Agent', 'Mozilla');
     request.once('response', this._onRequestResponse.bind(this));
@@ -132,10 +131,7 @@ export default class RadioParser extends EventEmitter {
    * @private
    */
   _destroyResponse(response) {
-    if (!this.getConfig('keepListen')) {
-      response.destroy();
-    }
-
+    if (!this.getConfig('keepListen')) response.destroy();
     return this;
   }
 
@@ -145,13 +141,8 @@ export default class RadioParser extends EventEmitter {
    * @returns {RadioParser}
    * @private
    */
-  _queueNextRequest(timeout) {
-    timeout = timeout || this.getConfig('errorInterval');
-
-    if (this.getConfig('autoUpdate') && !this.getConfig('keepListen')) {
-      this.queueRequest(timeout);
-    }
-
+  _queueNextRequest(timeout = this.getConfig('errorInterval')) {
+    if (this.getConfig('autoUpdate') && !this.getConfig('keepListen')) this.queueRequest(timeout);
     return this;
   }
 
@@ -160,11 +151,8 @@ export default class RadioParser extends EventEmitter {
    * @param {Number} [timeout] Timeout in seconds
    * @returns {RadioParser}
    */
-  queueRequest(timeout) {
-    timeout = timeout || 0;
-
+  queueRequest(timeout = 0) {
     setTimeout(this._makeRequest.bind(this), timeout * 1000);
-
     return this;
   }
 
@@ -188,10 +176,10 @@ export default class RadioParser extends EventEmitter {
    */
   setConfig(config) {
     if (!this._config) {
-      var defaultConfig = _extend({}, DEFAULT_OPTIONS);
-      this._config = _extend(defaultConfig, config);
+      const defaultConfig = Object.assign({}, DEFAULT_OPTIONS);
+      this._config = Object.assign(defaultConfig, config);
     } else {
-      this._config = _extend(this._config, config);
+      this._config = Object.assign(this._config, config);
     }
 
     return this;
