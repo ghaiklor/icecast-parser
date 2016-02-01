@@ -44,9 +44,11 @@
     "coveralls": "2.11.6",
     "cz-conventional-changelog": "1.1.5",
     "isparta": "4.0.0",
+    "lame": "1.2.3",
     "mocha": "2.4.5",
     "semantic-release": "4.3.5",
-    "sinon": "1.17.3"
+    "sinon": "1.17.3",
+    "speaker": "0.2.6"
   },
   "config": {
     "commitizen": {
