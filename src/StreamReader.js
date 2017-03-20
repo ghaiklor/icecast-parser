@@ -1,5 +1,5 @@
-import util from 'util';
-import { Transform } from 'stream';
+const util = require('util');
+const Transform = require('stream').Transform;
 
 /**
  * "Init" state
@@ -128,7 +128,7 @@ const _onData = _trampoline((stream, chunk, done) => {
   }
 });
 
-export default class StreamReader extends Transform {
+class StreamReader extends Transform {
   /**
    * Creates new transform stream which emits `metadata` event when it will be read
    * @param {Number} icyMetaInt Number of bytes from response headers which shows how many bytes need to skip
@@ -231,3 +231,5 @@ export default class StreamReader extends Transform {
     this._passthrough(this._icyMetaInt, this._onMetaSectionStart);
   }
 }
+
+module.exports = StreamReader;

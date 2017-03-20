@@ -1,22 +1,22 @@
-import { assert } from 'chai';
-import RadioParser from '../../src/index';
+const assert = require('chai').assert;
+const RadioParser = require('../../src');
 
 describe('RadioParser', () => {
   it('Should properly create new instance', () => {
-    const radio = new RadioParser('http://streaming.radionomy.com/HammerHeadRadio');
+    const radio = new RadioParser('http://online-kissfm.tavrmedia.ua/KissFM_deep');
     assert.instanceOf(radio, RadioParser);
   });
 
   it('Should properly create new instance with options', () => {
-    const radio = new RadioParser({url: 'http://streaming.radionomy.com/HammerHeadRadio'});
+    const radio = new RadioParser({url: 'http://online-kissfm.tavrmedia.ua/KissFM_deep'});
     assert.instanceOf(radio, RadioParser);
   });
 
   it('Should properly get/set config', () => {
-    const radio = new RadioParser('http://streaming.radionomy.com/HammerHeadRadio');
+    const radio = new RadioParser('http://online-kissfm.tavrmedia.ua/KissFM_deep');
 
     assert.deepEqual(radio.getConfig(), {
-      url: 'http://streaming.radionomy.com/HammerHeadRadio',
+      url: 'http://online-kissfm.tavrmedia.ua/KissFM_deep',
       keepListen: false,
       autoUpdate: true,
       errorInterval: 10 * 60,
@@ -43,11 +43,11 @@ describe('RadioParser', () => {
     });
 
     assert.instanceOf(radio.setConfig({
-      url: 'http://streaming.radionomy.com/HammerHeadRadio'
+      url: 'http://online-kissfm.tavrmedia.ua/KissFM_deep'
     }), RadioParser);
 
     assert.deepEqual(radio.getConfig(), {
-      url: 'http://streaming.radionomy.com/HammerHeadRadio',
+      url: 'http://online-kissfm.tavrmedia.ua/KissFM_deep',
       keepListen: true,
       autoUpdate: false,
       errorInterval: 1000,
@@ -59,7 +59,7 @@ describe('RadioParser', () => {
   });
 
   it('Should properly emit metadata from Icecast', done => {
-    const radio = new RadioParser('http://streaming.radionomy.com/Elium-Rock');
+    const radio = new RadioParser('http://online-kissfm.tavrmedia.ua/KissFM_deep');
     radio.on('metadata', metadata => {
       assert.isObject(metadata);
       assert.isString(metadata.StreamTitle);

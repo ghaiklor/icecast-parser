@@ -1,8 +1,6 @@
-"use strict";
-
-const Parser = require('../lib/index');
+const Parser = require('../src');
 const radioStation = new Parser({
-  url: 'http://streaming.radionomy.com/Elium-Rock', // URL to radio station
+  url: 'http://online-kissfm.tavrmedia.ua/KissFM_deep', // URL to radio station
   keepListen: false, // don't listen radio station after metadata was received
   autoUpdate: false, // update metadata after interval
   errorInterval: 10 * 60, // retry connection after 10 minutes

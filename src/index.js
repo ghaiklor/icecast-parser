@@ -1,7 +1,7 @@
-import http from 'http';
-import util from 'util';
-import EventEmitter from 'events';
-import StreamReader from './StreamReader';
+const http = require('http');
+const util = require('util');
+const EventEmitter = require('events');
+const StreamReader = require('./StreamReader');
 
 /**
  * Default options
@@ -17,7 +17,7 @@ const DEFAULT_OPTIONS = {
   metadataInterval: 5
 };
 
-export default class RadioParser extends EventEmitter {
+class RadioParser extends EventEmitter {
   /**
    * RadioParser class
    * @param {Object|String} options Configuration object or string with radio station URL
@@ -149,3 +149,5 @@ export default class RadioParser extends EventEmitter {
     return this;
   }
 }
+
+module.exports = RadioParser;

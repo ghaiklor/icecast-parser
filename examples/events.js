@@ -1,17 +1,15 @@
-"use strict";
-
-const Parser = require('../lib/index');
+const Parser = require('../src');
 const Speaker = require('speaker');
 const lame = require('lame');
 
 const speaker = new Speaker();
 const decoder = new lame.Decoder();
 const radioStation = new Parser({
-  url: 'http://streaming.radionomy.com/Elium-Rock',
+  url: 'http://online-kissfm.tavrmedia.ua/KissFM_deep',
   keepListen: true
 });
 
-radioStation.on('error', error => console.log(['Connection to', this.getConfig('url'), 'was rejected'].join(' ')));
-radioStation.on('empty', () => console.log(['Radio station', this.getConfig('url'), 'doesn\'t have metadata'].join(' ')));
+radioStation.on('error', error => console.log(['Connection to', radioStation.getConfig('url'), 'was rejected'].join(' ')));
+radioStation.on('empty', () => console.log(['Radio station', radioStation.getConfig('url'), 'doesn\'t have metadata'].join(' ')));
 radioStation.on('metadata', metadata => console.log(metadata.StreamTitle));
 radioStation.on('stream', stream => stream.pipe(decoder).pipe(speaker));
