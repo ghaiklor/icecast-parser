@@ -42,7 +42,7 @@
     "istanbul": "0.4.5",
     "lame": "1.2.4",
     "mocha": "4.1.0",
-    "semantic-release": "11.0.2",
+    "semantic-release": "12.2.2",
     "sinon": "4.1.3",
     "speaker": "0.3.1"
   },
