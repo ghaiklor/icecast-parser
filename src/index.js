@@ -1,5 +1,4 @@
-const http = require('http');
-const util = require('util');
+const axios = require('axios').default;
 const EventEmitter = require('events');
 const StreamReader = require('./StreamReader');
 
@@ -53,7 +52,7 @@ class RadioParser extends EventEmitter {
         this.emit('metadata', metadata);
       });
 
-      response.pipe(reader);
+      response.data.pipe(reader);
       this.emit('stream', reader);
     } else {
       this._destroyResponse(response);
@@ -81,15 +80,26 @@ class RadioParser extends EventEmitter {
    * @private
    */
   _makeRequest() {
-    const request = http.request(this.getConfig('url'));
+    axios.get(this.getConfig('url'), {
+      headers: {
+        'Icy-MetaData': '1',
+        'user-Agent': 'Mozilla'
+      },
+      responseType: 'stream'
+    }).then((response) => {
+      this._onRequestResponse.bind(this)(response);
+    }).catch((error) => {
+      console.error(error);
+    });
+    // const request = http.request(this.getConfig('url'));
 
-    request.setHeader('Icy-MetaData', '1');
-    request.setHeader('User-Agent', 'Mozilla');
-    request.once('response', this._onRequestResponse.bind(this));
-    request.once('error', this._onRequestError.bind(this));
-    request.end();
+    // request.setHeader('Icy-MetaData', '1');
+    // request.setHeader('User-Agent', 'Mozilla');
+    // request.once('response', this._onRequestResponse.bind(this));
+    // request.once('error', this._onRequestError.bind(this));
+    // request.end();
 
-    return this;
+    // return this;
   }
 
   /**
