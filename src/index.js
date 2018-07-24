@@ -91,15 +91,6 @@ class RadioParser extends EventEmitter {
     }).catch((error) => {
       console.error(error);
     });
-    // const request = http.request(this.getConfig('url'));
-
-    // request.setHeader('Icy-MetaData', '1');
-    // request.setHeader('User-Agent', 'Mozilla');
-    // request.once('response', this._onRequestResponse.bind(this));
-    // request.once('error', this._onRequestError.bind(this));
-    // request.end();
-
-    // return this;
   }
 
   /**
