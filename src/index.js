@@ -1,4 +1,4 @@
-const axios = require('axios').default;
+const axios = require('axios');
 const EventEmitter = require('events');
 const StreamReader = require('./StreamReader');
 
