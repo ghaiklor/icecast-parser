@@ -38,7 +38,7 @@ Get your first metadata from radio station.
 ```javascript
 const Parser = require('icecast-parser');
 
-const radioStation = new Parser('http://streaming.radionomy.com/HammerHeadRadio');
+const radioStation = new Parser('http://streaming.radionomy.com/JamendoLounge');
 
 radioStation.on('metadata', function(metadata) {
     console.log([metadata.StreamTitle, 'is playing on', this.getConfig('url')].join(' '));
@@ -60,7 +60,7 @@ You can provide additional parameters to constructor:
 const Parser = require('icecast-parser');
 
 const radioStation = new Parser({
-    url: 'http://streaming.radionomy.com/HammerHeadRadio', // URL to radio station
+    url: 'http://streaming.radionomy.com/JamendoLounge', // URL to radio station
     keepListen: false, // don't listen radio station after metadata was received
     autoUpdate: true, // update metadata after interval
     errorInterval: 10 * 60, // retry connection after 10 minutes
@@ -87,7 +87,7 @@ You can subscribe to 4 events - `error`, `empty`, `metadata`, `stream`.
 const Parser = require('icecast-parser');
 
 const radioStation = new Parser({
-    url: 'http://streaming.radionomy.com/HammerHeadRadio'
+    url: 'http://streaming.radionomy.com/JamendoLounge'
     keepListen: true
 });
 
@@ -119,7 +119,7 @@ When connection is established, parser is sending stream as first argument to yo
 const Parser = require('icecast-parser');
 
 const radioStation = new Parser({
-    url: 'http://streaming.radionomy.com/HammerHeadRadio',
+    url: 'http://streaming.radionomy.com/JamendoLounge',
     keepListen: true // keep listening radio station
 });
 
