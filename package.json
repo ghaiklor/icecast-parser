@@ -41,7 +41,7 @@
     "cz-conventional-changelog": "2.1.0",
     "istanbul": "0.4.5",
     "lame": "1.2.4",
-    "mocha": "5.2.0",
+    "mocha": "6.0.0",
     "semantic-release": "15.9.9",
     "sinon": "7.2.3",
     "speaker": "0.4.1"
