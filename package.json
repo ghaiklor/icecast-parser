@@ -43,7 +43,7 @@
     "lame": "1.2.4",
     "mocha": "6.0.0",
     "semantic-release": "15.10.7",
-    "sinon": "7.2.3",
+    "sinon": "7.3.2",
     "speaker": "0.4.1"
   },
   "config": {
