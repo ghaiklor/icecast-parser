@@ -10,12 +10,12 @@ const StreamReader = require('./StreamReader');
  * @private
  */
 const DEFAULT_OPTIONS = {
+  userAgent: 'Mozilla',
   keepListen: false,
   autoUpdate: true,
   errorInterval: 10 * 60,
   emptyInterval: 5 * 60,
-  metadataInterval: 5,
-  userAgent: 'Mozilla'
+  metadataInterval: 5
 };
 
 class RadioParser extends EventEmitter {
@@ -86,12 +86,13 @@ class RadioParser extends EventEmitter {
     if (this.getConfig('keepListen')) this.emit('end');
     return this;
   }
+  
   /**
    * Make request to radio station and get stream
    * @private
    */
   _makeRequest() {
-    const request = http.request(this.getConfig('url'));
+    const request = (this.getConfig('url').indexOf("https://") == 0) ? https.request(this.getConfig('url')) : http.request(this.getConfig('url'));
 
     request.setHeader('Icy-MetaData', '1');
     request.setHeader('User-Agent', this.getConfig('userAgent'));
