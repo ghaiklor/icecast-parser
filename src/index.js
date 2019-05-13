@@ -1,4 +1,6 @@
 const http = require('http');
+const https = require('https');
+
 const util = require('util');
 const EventEmitter = require('events');
 const StreamReader = require('./StreamReader');
