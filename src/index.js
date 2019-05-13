@@ -14,7 +14,8 @@ const DEFAULT_OPTIONS = {
   autoUpdate: true,
   errorInterval: 10 * 60,
   emptyInterval: 5 * 60,
-  metadataInterval: 5
+  metadataInterval: 5,
+  userAgent: 'Mozilla'
 };
 
 class RadioParser extends EventEmitter {
@@ -77,6 +78,15 @@ class RadioParser extends EventEmitter {
   }
 
   /**
+   * Called when socket end
+   * @returns {RadioParser}
+   * @private
+   */
+  _onSocketEnd() {
+    if (this.getConfig('keepListen')) this.emit('end');
+    return this;
+  }
+  /**
    * Make request to radio station and get stream
    * @private
    */
@@ -84,7 +94,10 @@ class RadioParser extends EventEmitter {
     const request = http.request(this.getConfig('url'));
 
     request.setHeader('Icy-MetaData', '1');
-    request.setHeader('User-Agent', 'Mozilla');
+    request.setHeader('User-Agent', this.getConfig('userAgent'));
+    request.once('socket', function (socket) {
+      socket.once('end', this._onSocketEnd.bind(this));
+    }.bind(this));
     request.once('response', this._onRequestResponse.bind(this));
     request.once('error', this._onRequestError.bind(this));
     request.end();
