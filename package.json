@@ -42,9 +42,9 @@
     "istanbul": "0.4.5",
     "lame": "1.2.4",
     "mocha": "6.1.0",
-    "semantic-release": "15.10.7",
+    "semantic-release": "15.13.12",
     "sinon": "7.2.3",
-    "speaker": "0.4.1"
+    "speaker": "0.4.2"
   },
   "config": {
     "commitizen": {
