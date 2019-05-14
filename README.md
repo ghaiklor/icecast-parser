@@ -38,7 +38,7 @@ Get your first metadata from radio station.
 ```javascript
 const Parser = require('icecast-parser');
 
-const radioStation = new Parser('http://streaming.radionomy.com/JamendoLounge');
+const radioStation = new Parser('https://live.hunter.fm/80s');
 
 radioStation.on('metadata', function(metadata) {
     console.log([metadata.StreamTitle, 'is playing on', this.getConfig('url')].join(' '));
@@ -50,6 +50,7 @@ radioStation.on('metadata', function(metadata) {
 You can provide additional parameters to constructor:
 
 - `url` - by default empty and **REQUIRED**.
+- `userAgent` - by default `Mozilla`. You can set userAgent from request.
 - `keepListen` - by default `false`. If you set to `true`, then response from radio station is not destroys and you can pipe it to another streams.
 - `autoUpdate` - by default `true`. If you set to `false`, then metadata will not be updates with interval and notify you about new metadata;
 - `errorInterval` - by default `600` s. You can set interval in seconds when next try will be executed if connection was refused or rejected. Works only if `autoUpdate` is enabled.
@@ -60,7 +61,8 @@ You can provide additional parameters to constructor:
 const Parser = require('icecast-parser');
 
 const radioStation = new Parser({
-    url: 'http://streaming.radionomy.com/JamendoLounge', // URL to radio station
+    url: 'https://live.hunter.fm/80s', // URL to radio station
+    userAgent: 'Parse-Icy', // userAgent to request
     keepListen: false, // don't listen radio station after metadata was received
     autoUpdate: true, // update metadata after interval
     errorInterval: 10 * 60, // retry connection after 10 minutes
@@ -76,8 +78,9 @@ radioStation.on('metadata', function(metadata) {
 
 ## Events
 
-You can subscribe to 4 events - `error`, `empty`, `metadata`, `stream`.
+You can subscribe to 5 events - `end`, `error`, `empty`, `metadata`, `stream`.
 
+- `end` event triggers when connection to radio station was finished;
 - `error` event triggers when connection to radio station was refused, rejected or timed out;
 - `empty` event triggers when connection was established successful, but radio station doesn't return metaint byte in response headers;
 - `metadata` event triggers when connection was established successful and metadata is parsed successful;
@@ -87,8 +90,12 @@ You can subscribe to 4 events - `error`, `empty`, `metadata`, `stream`.
 const Parser = require('icecast-parser');
 
 const radioStation = new Parser({
-    url: 'http://streaming.radionomy.com/JamendoLounge'
+    url: 'https://live.hunter.fm/80s'
     keepListen: true
+});
+
+radioStation.on('end', function(error) {
+    console.log(['Connection to', this.getConfig('url'), 'was finished'].join(' '));
 });
 
 radioStation.on('error', function(error) {
@@ -119,7 +126,7 @@ When connection is established, parser is sending stream as first argument to yo
 const Parser = require('icecast-parser');
 
 const radioStation = new Parser({
-    url: 'http://streaming.radionomy.com/JamendoLounge',
+    url: 'https://live.hunter.fm/80s',
     keepListen: true // keep listening radio station
 });
 

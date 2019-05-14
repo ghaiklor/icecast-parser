@@ -1,4 +1,6 @@
 const http = require('http');
+const https = require('https');
+
 const util = require('util');
 const EventEmitter = require('events');
 const StreamReader = require('./StreamReader');
@@ -10,6 +12,7 @@ const StreamReader = require('./StreamReader');
  * @private
  */
 const DEFAULT_OPTIONS = {
+  userAgent: 'Mozilla',
   keepListen: false,
   autoUpdate: true,
   errorInterval: 10 * 60,
@@ -77,14 +80,27 @@ class RadioParser extends EventEmitter {
   }
 
   /**
+   * Called when socket end
+   * @returns {RadioParser}
+   * @private
+   */
+  _onSocketEnd() {
+    if (this.getConfig('keepListen')) this.emit('end');
+    return this;
+  }
+  
+  /**
    * Make request to radio station and get stream
    * @private
    */
   _makeRequest() {
-    const request = http.request(this.getConfig('url'));
+    const request = (this.getConfig('url').indexOf("https://") == 0) ? https.request(this.getConfig('url')) : http.request(this.getConfig('url'));
 
     request.setHeader('Icy-MetaData', '1');
-    request.setHeader('User-Agent', 'Mozilla');
+    request.setHeader('User-Agent', this.getConfig('userAgent'));
+    request.once('socket', function (socket) {
+      socket.once('end', this._onSocketEnd.bind(this));
+    }.bind(this));
     request.once('response', this._onRequestResponse.bind(this));
     request.once('error', this._onRequestError.bind(this));
     request.end();
