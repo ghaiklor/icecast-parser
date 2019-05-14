@@ -16,13 +16,8 @@ notifications:
   email: true
 node_js:
   - "lts/*"
-before_install:
-  - npm install -g npm@latest
-before_script:
-  - npm prune
 after_success:
   - npm run coveralls
-  - npm run semantic-release
 branches:
   except:
     - /^v\d+\.\d+\.\d+$/
