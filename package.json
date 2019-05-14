@@ -44,7 +44,7 @@
     "mocha": "6.0.0",
     "semantic-release": "15.13.12",
     "sinon": "7.2.3",
-    "speaker": "0.4.1"
+    "speaker": "0.4.2"
   },
   "config": {
     "commitizen": {
