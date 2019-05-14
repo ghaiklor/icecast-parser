@@ -1,7 +1,5 @@
 const http = require('http');
 const https = require('https');
-
-const util = require('util');
 const EventEmitter = require('events');
 const StreamReader = require('./StreamReader');
 
@@ -26,11 +24,11 @@ class RadioParser extends EventEmitter {
    * @param {Object|String} options Configuration object or string with radio station URL
    * @constructor
    */
-  constructor(options) {
+  constructor (options) {
     super();
 
     if (typeof options === 'string') {
-      this.setConfig({url: options});
+      this.setConfig({ url: options });
     } else {
       this.setConfig(options);
     }
@@ -44,7 +42,7 @@ class RadioParser extends EventEmitter {
    * @returns {RadioParser}
    * @private
    */
-  _onRequestResponse(response) {
+  _onRequestResponse (response) {
     const icyMetaInt = response.headers['icy-metaint'];
 
     if (icyMetaInt) {
@@ -73,7 +71,7 @@ class RadioParser extends EventEmitter {
    * @returns {RadioParser}
    * @private
    */
-  _onRequestError(error) {
+  _onRequestError (error) {
     this._queueNextRequest(this.getConfig('errorInterval'));
     this.emit('error', error);
     return this;
@@ -84,17 +82,17 @@ class RadioParser extends EventEmitter {
    * @returns {RadioParser}
    * @private
    */
-  _onSocketEnd() {
+  _onSocketEnd () {
     if (this.getConfig('keepListen')) this.emit('end');
     return this;
   }
-  
+
   /**
    * Make request to radio station and get stream
    * @private
    */
-  _makeRequest() {
-    const request = (this.getConfig('url').indexOf("https://") == 0) ? https.request(this.getConfig('url')) : http.request(this.getConfig('url'));
+  _makeRequest () {
+    const request = (this.getConfig('url').indexOf('https://') === 0) ? https.request(this.getConfig('url')) : http.request(this.getConfig('url'));
 
     request.setHeader('Icy-MetaData', '1');
     request.setHeader('User-Agent', this.getConfig('userAgent'));
@@ -114,7 +112,7 @@ class RadioParser extends EventEmitter {
    * @returns {RadioParser}
    * @private
    */
-  _destroyResponse(response) {
+  _destroyResponse (response) {
     if (!this.getConfig('keepListen')) response.destroy();
     return this;
   }
@@ -125,7 +123,7 @@ class RadioParser extends EventEmitter {
    * @returns {RadioParser}
    * @private
    */
-  _queueNextRequest(timeout) {
+  _queueNextRequest (timeout) {
     if (this.getConfig('autoUpdate') && !this.getConfig('keepListen')) this.queueRequest(timeout);
     return this;
   }
@@ -135,7 +133,7 @@ class RadioParser extends EventEmitter {
    * @param {Number} [timeout] Timeout in seconds
    * @returns {RadioParser}
    */
-  queueRequest(timeout = 0) {
+  queueRequest (timeout = 0) {
     setTimeout(this._makeRequest.bind(this), timeout * 1000);
     return this;
   }
@@ -145,7 +143,7 @@ class RadioParser extends EventEmitter {
    * @param {String} [key] Key name
    * @returns {*} Returns appropriate value by key or configuration object
    */
-  getConfig(key) {
+  getConfig (key) {
     return key ? this._config[key] : this._config;
   }
 
@@ -154,7 +152,7 @@ class RadioParser extends EventEmitter {
    * @param {Object} config New configuration object
    * @returns {RadioParser}
    */
-  setConfig(config) {
+  setConfig (config) {
     if (!this._config) {
       const defaultConfig = Object.assign({}, DEFAULT_OPTIONS);
       this._config = Object.assign(defaultConfig, config);

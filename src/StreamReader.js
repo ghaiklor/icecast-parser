@@ -1,4 +1,3 @@
-const util = require('util');
 const Transform = require('stream').Transform;
 
 /**
@@ -44,7 +43,7 @@ const _parseMetadata = metadata => {
   const result = {};
 
   data.replace(/\0*$/, '').split(';').forEach(item => {
-    item = item.split(/\=['"]/);
+    item = item.split(/=['"]/);
     result[item[0]] = String(item[1]).replace(/['"]$/, '');
   });
 
@@ -134,7 +133,7 @@ class StreamReader extends Transform {
    * @param {Number} icyMetaInt Number of bytes from response headers which shows how many bytes need to skip
    * @constructor
    */
-  constructor(icyMetaInt) {
+  constructor (icyMetaInt) {
     super();
 
     // How many bytes left to read
@@ -165,7 +164,7 @@ class StreamReader extends Transform {
    * @returns {StreamReader}
    * @private
    */
-  _bytes(length, cb) {
+  _bytes (length, cb) {
     this._bytesLeft = length;
     this._currentState = BUFFERING_STATE;
     this._callback = cb;
@@ -179,7 +178,7 @@ class StreamReader extends Transform {
    * @returns {StreamReader}
    * @private
    */
-  _passthrough(length, cb) {
+  _passthrough (length, cb) {
     this._bytesLeft = length;
     this._currentState = PASSTHROUGH_STATE;
     this._callback = cb;
@@ -194,7 +193,7 @@ class StreamReader extends Transform {
    * @returns {Function}
    * @private
    */
-  _transform(chunk, encoding, done) {
+  _transform (chunk, encoding, done) {
     _onData(this, chunk, done);
   }
 
@@ -202,7 +201,7 @@ class StreamReader extends Transform {
    * Triggers when metadata section is starting
    * @private
    */
-  _onMetaSectionStart() {
+  _onMetaSectionStart () {
     this._bytes(1, this._onMetaSectionLengthByte);
   }
 
@@ -211,7 +210,7 @@ class StreamReader extends Transform {
    * @param chunk Chunk where located length byte
    * @private
    */
-  _onMetaSectionLengthByte(chunk) {
+  _onMetaSectionLengthByte (chunk) {
     const length = chunk[0] * METADATA_BLOCK_SIZE;
 
     if (length > 0) {
@@ -226,7 +225,7 @@ class StreamReader extends Transform {
    * @param chunk Metadata buffer
    * @private
    */
-  _onMetaData(chunk) {
+  _onMetaData (chunk) {
     this.emit('metadata', _parseMetadata(chunk));
     this._passthrough(this._icyMetaInt, this._onMetaSectionStart);
   }

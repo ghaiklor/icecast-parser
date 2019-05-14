@@ -31,7 +31,8 @@
   ],
   "scripts": {
     "coveralls": "cat coverage/lcov.info | coveralls",
-    "prepublish": "npm run test",
+    "lint": "eslint .",
+    "prepare": "npm run lint && npm run test",
     "semantic-release": "semantic-release pre && npm publish && semantic-release post",
     "test": "istanbul cover _mocha"
   },
@@ -39,6 +40,12 @@
     "chai": "4.1.2",
     "coveralls": "3.0.3",
     "cz-conventional-changelog": "2.1.0",
+    "eslint": "5.16.0",
+    "eslint-config-standard": "12.0.0",
+    "eslint-plugin-import": "2.17.2",
+    "eslint-plugin-node": "9.0.1",
+    "eslint-plugin-promise": "4.1.1",
+    "eslint-plugin-standard": "4.0.0",
     "istanbul": "0.4.5",
     "lame": "1.2.4",
     "mocha": "6.1.0",

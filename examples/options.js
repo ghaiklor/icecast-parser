@@ -1,6 +1,6 @@
 const Parser = require('../src');
 const radioStation = new Parser({
-  url: 'http://online-kissfm.tavrmedia.ua/KissFM_deep', // URL to radio station
+  url: 'https://live.hunter.fm/80s', // URL to radio station
   keepListen: false, // don't listen radio station after metadata was received
   autoUpdate: false, // update metadata after interval
   errorInterval: 10 * 60, // retry connection after 10 minutes

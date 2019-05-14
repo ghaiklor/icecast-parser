@@ -3,29 +3,31 @@ const RadioParser = require('../../src');
 
 describe('RadioParser', () => {
   it('Should properly create new instance', () => {
-    const radio = new RadioParser('http://online-kissfm.tavrmedia.ua/KissFM_deep');
+    const radio = new RadioParser('https://live.hunter.fm/80s');
     assert.instanceOf(radio, RadioParser);
   });
 
   it('Should properly create new instance with options', () => {
-    const radio = new RadioParser({url: 'http://online-kissfm.tavrmedia.ua/KissFM_deep'});
+    const radio = new RadioParser({ url: 'https://live.hunter.fm/80s' });
     assert.instanceOf(radio, RadioParser);
   });
 
   it('Should properly get/set config', () => {
-    const radio = new RadioParser('http://online-kissfm.tavrmedia.ua/KissFM_deep');
+    const radio = new RadioParser('https://live.hunter.fm/80s');
 
     assert.deepEqual(radio.getConfig(), {
-      url: 'http://online-kissfm.tavrmedia.ua/KissFM_deep',
+      url: 'https://live.hunter.fm/80s',
       keepListen: false,
       autoUpdate: true,
       errorInterval: 10 * 60,
       emptyInterval: 5 * 60,
-      metadataInterval: 5
+      metadataInterval: 5,
+      userAgent: 'Mozilla'
     });
 
     assert.instanceOf(radio.setConfig({
       url: 'http://another-link.com',
+      userAgent: 'Not-Mozilla',
       keepListen: true,
       autoUpdate: false,
       errorInterval: 1000,
@@ -35,6 +37,7 @@ describe('RadioParser', () => {
 
     assert.deepEqual(radio.getConfig(), {
       url: 'http://another-link.com',
+      userAgent: 'Not-Mozilla',
       keepListen: true,
       autoUpdate: false,
       errorInterval: 1000,
@@ -43,11 +46,12 @@ describe('RadioParser', () => {
     });
 
     assert.instanceOf(radio.setConfig({
-      url: 'http://online-kissfm.tavrmedia.ua/KissFM_deep'
+      url: 'https://live.hunter.fm/80s'
     }), RadioParser);
 
     assert.deepEqual(radio.getConfig(), {
-      url: 'http://online-kissfm.tavrmedia.ua/KissFM_deep',
+      url: 'https://live.hunter.fm/80s',
+      userAgent: 'Not-Mozilla',
       keepListen: true,
       autoUpdate: false,
       errorInterval: 1000,
@@ -59,7 +63,7 @@ describe('RadioParser', () => {
   });
 
   it('Should properly emit metadata from Icecast', done => {
-    const radio = new RadioParser('http://online-kissfm.tavrmedia.ua/KissFM_deep');
+    const radio = new RadioParser('https://live.hunter.fm/80s');
     radio.on('metadata', metadata => {
       assert.isObject(metadata);
       assert.isString(metadata.StreamTitle);

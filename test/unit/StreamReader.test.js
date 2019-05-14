@@ -20,7 +20,7 @@ describe('StreamReader', () => {
       calledMetadata = true;
     });
 
-    reader.on('data', data => output += data);
+    reader.on('data', data => (output += data));
     reader.on('end', () => {
       assert.ok(calledMetadata);
       assert.equal(output, 'fake data');

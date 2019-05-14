@@ -30,11 +30,13 @@ NodeJS module for getting and parsing metadata from SHOUTcast/Icecast radio stre
 ## Getting started
 
 You can install icecast-parser from npm.
+
 ```shell
 npm install icecast-parser
 ```
 
 Get your first metadata from radio station.
+
 ```javascript
 const Parser = require('icecast-parser');
 
@@ -115,7 +117,7 @@ radioStation.on('stream', function(stream) {
 });
 ```
 
-## How to get radio's stream for your purposes?
+## How to get radio's stream for your purposes
 
 You can use `stream` event for that.
 When connection is established, parser is sending stream as first argument to your listener.
