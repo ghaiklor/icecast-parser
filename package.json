@@ -1,6 +1,6 @@
 {
   "name": "icecast-parser",
-  "version": "0.0.0-development",
+  "version": "3.0.0",
   "description": "NodeJS module for getting and parsing metadata from SHOUTcast/Icecast radio streams",
   "main": "src/index.js",
   "license": "MIT",
@@ -33,7 +33,6 @@
     "coveralls": "cat coverage/lcov.info | coveralls",
     "lint": "eslint .",
     "prepare": "npm run lint && npm run test",
-    "semantic-release": "semantic-release pre && npm publish && semantic-release post",
     "test": "istanbul cover _mocha"
   },
   "devDependencies": {
@@ -48,8 +47,7 @@
     "eslint-plugin-standard": "4.0.0",
     "istanbul": "0.4.5",
     "lame": "1.2.4",
-    "mocha": "6.1.0",
-    "semantic-release": "15.13.12",
+    "mocha": "^6.1.4",
     "sinon": "7.3.2",
     "speaker": "0.4.2"
   },
