@@ -1,4 +1,4 @@
-const Parser = require('../src');
+const Parser = require('..');
 const radioStation = new Parser('https://live.hunter.fm/80s');
 
 // It will notify you every time when new metadata accepted

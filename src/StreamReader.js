@@ -33,6 +33,14 @@ const PASSTHROUGH_STATE = 3;
 const METADATA_BLOCK_SIZE = 16;
 
 /**
+ * Regular expression used to match metadata from the stream
+ * @description :: Key goes before `=` and value goes after it in quotes
+ * @type {RegExp}
+ * @private
+ */
+const METADATA_REGEX = /(\w+)=['"](.+?)['"];/g;
+
+/**
  * Parse metadata to object
  * @param {Buffer|String} metadata Buffer or string with metadata information
  * @returns {Object}
@@ -40,14 +48,9 @@ const METADATA_BLOCK_SIZE = 16;
  */
 const _parseMetadata = metadata => {
   const data = Buffer.isBuffer(metadata) ? metadata.toString('utf8') : metadata || '';
-  const result = {};
+  const parts = [...data.replace(/\0*$/, '').matchAll(METADATA_REGEX)];
 
-  data.replace(/\0*$/, '').split(';').forEach(item => {
-    item = item.split(/=['"]/);
-    result[item[0]] = String(item[1]).replace(/['"]$/, '');
-  });
-
-  return result;
+  return parts.reduce((metadata, item) => (metadata[item[1]] = String(item[2])) && metadata, {});
 };
 
 /**

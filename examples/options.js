@@ -1,4 +1,4 @@
-const Parser = require('../src');
+const Parser = require('..');
 const radioStation = new Parser({
   url: 'https://live.hunter.fm/80s', // URL to radio station
   keepListen: false, // don't listen radio station after metadata was received

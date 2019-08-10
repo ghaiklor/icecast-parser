@@ -1,7 +1,7 @@
 {
   "name": "icecast-parser",
   "version": "3.1.0",
-  "description": "NodeJS module for getting and parsing metadata from SHOUTcast/Icecast radio streams",
+  "description": "Node.js module for getting and parsing metadata from SHOUTcast/Icecast radio streams",
   "main": "src/index.js",
   "license": "MIT",
   "repository": {
@@ -30,36 +30,27 @@
     "stream"
   ],
   "scripts": {
+    "commit": "git-cz",
     "coveralls": "cat coverage/lcov.info | coveralls",
     "lint": "eslint .",
     "prepare": "npm run lint && npm run test",
+    "preversion": "npm run lint && npm run test",
     "test": "istanbul cover _mocha"
   },
   "devDependencies": {
-    "chai": "4.1.2",
-    "coveralls": "3.0.5",
-    "cz-conventional-changelog": "3.0.0",
-    "eslint": "6.0.0",
+    "chai": "4.2.0",
+    "coveralls": "3.0.6",
+    "eslint": "6.1.0",
     "eslint-config-standard": "13.0.1",
-    "eslint-plugin-import": "2.18.1",
+    "eslint-plugin-import": "2.18.2",
     "eslint-plugin-node": "9.1.0",
     "eslint-plugin-promise": "4.2.1",
     "eslint-plugin-standard": "4.0.0",
+    "git-cz": "3.2.1",
     "istanbul": "0.4.5",
     "lame": "1.2.4",
-    "mocha": "^6.1.4",
-    "sinon": "7.4.0",
+    "mocha": "6.2.0",
+    "sinon": "7.4.1",
     "speaker": "0.4.2"
-  },
-  "config": {
-    "commitizen": {
-      "path": "./node_modules/cz-conventional-changelog"
-    }
-  },
-  "publishConfig": {
-    "tag": "latest"
-  },
-  "release": {
-    "branch": "master"
   }
 }
