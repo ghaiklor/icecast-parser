@@ -17,6 +17,9 @@
     "url": "https://github.com/ghaiklor/icecast-parser/issues",
     "email": "ghaiklor@gmail.com"
   },
+  "engines": {
+    "node": ">= 12.0.0"
+  },
   "homepage": "https://github.com/ghaiklor/icecast-parser",
   "keywords": [
     "shoutcast",

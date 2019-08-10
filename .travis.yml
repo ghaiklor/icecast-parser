@@ -15,7 +15,7 @@ cache:
 notifications:
   email: true
 node_js:
-  - "lts/*"
+  - "node"
 after_success:
   - npm run coveralls
 branches:
