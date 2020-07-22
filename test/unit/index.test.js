@@ -3,20 +3,20 @@ const RadioParser = require('../../src');
 
 describe('RadioParser', () => {
   it('Should properly create new instance', () => {
-    const radio = new RadioParser('https://live.hunter.fm/80s');
+    const radio = new RadioParser('https://live.hunter.fm/80s_high');
     assert.instanceOf(radio, RadioParser);
   });
 
   it('Should properly create new instance with options', () => {
-    const radio = new RadioParser({ url: 'https://live.hunter.fm/80s' });
+    const radio = new RadioParser({ url: 'https://live.hunter.fm/80s_high' });
     assert.instanceOf(radio, RadioParser);
   });
 
   it('Should properly get/set config', () => {
-    const radio = new RadioParser('https://live.hunter.fm/80s');
+    const radio = new RadioParser('https://live.hunter.fm/80s_high');
 
     assert.deepEqual(radio.getConfig(), {
-      url: 'https://live.hunter.fm/80s',
+      url: 'https://live.hunter.fm/80s_high',
       keepListen: false,
       autoUpdate: true,
       errorInterval: 10 * 60,
@@ -46,11 +46,11 @@ describe('RadioParser', () => {
     });
 
     assert.instanceOf(radio.setConfig({
-      url: 'https://live.hunter.fm/80s'
+      url: 'https://live.hunter.fm/80s_high'
     }), RadioParser);
 
     assert.deepEqual(radio.getConfig(), {
-      url: 'https://live.hunter.fm/80s',
+      url: 'https://live.hunter.fm/80s_high',
       userAgent: 'Not-Mozilla',
       keepListen: true,
       autoUpdate: false,
@@ -63,7 +63,7 @@ describe('RadioParser', () => {
   });
 
   it('Should properly emit metadata from Icecast', done => {
-    const radio = new RadioParser('https://live.hunter.fm/80s');
+    const radio = new RadioParser('https://live.hunter.fm/80s_high');
     radio.on('metadata', metadata => {
       assert.isObject(metadata);
       assert.isString(metadata.StreamTitle);
