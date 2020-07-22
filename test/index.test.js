@@ -1,5 +1,5 @@
 const assert = require('chai').assert;
-const RadioParser = require('../../src');
+const RadioParser = require('../src');
 
 describe('RadioParser', () => {
   it('Should properly create new instance', () => {

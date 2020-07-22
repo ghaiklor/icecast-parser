@@ -1,5 +1,0 @@
-./test/unit/**/*.test.js
---reporter nyan
---recursive
---timeout 10000
---exit

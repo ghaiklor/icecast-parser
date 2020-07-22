@@ -1,0 +1,7 @@
+{
+  "spec": "test/**/*.test.js",
+  "reporter": "nyan",
+  "recursive": true,
+  "timeout": 10000,
+  "exit": true
+}

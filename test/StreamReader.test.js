@@ -1,5 +1,5 @@
 const assert = require('chai').assert;
-const StreamReader = require('../../src/StreamReader');
+const StreamReader = require('../src/StreamReader');
 
 describe('StreamReader', () => {
   it('Should properly instantiate reader', () => {
