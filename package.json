@@ -38,7 +38,7 @@
     "lint": "eslint .",
     "prepare": "npm run lint && npm run test",
     "preversion": "npm run lint && npm run test",
-    "test": "istanbul cover _mocha"
+    "test": "jest"
   },
   "devDependencies": {
     "chai": "4.2.0",
@@ -51,6 +51,7 @@
     "eslint-plugin-standard": "4.0.1",
     "git-cz": "4.7.0",
     "istanbul": "0.4.5",
+    "jest": "^26.1.0",
     "mocha": "8.0.1",
     "sinon": "9.0.2"
   }
