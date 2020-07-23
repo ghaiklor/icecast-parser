@@ -74,4 +74,20 @@ describe('RadioParser', () => {
       done();
     });
   });
+
+  it('Should properly emit metadata with notifyOnChangeOnly property', done => {
+    const radio = new RadioParser({ url: 'https://live.hunter.fm/80s_high', notifyOnChangeOnly: true });
+    let firstMetadata = {};
+    let secondMetadata = {};
+    setTimeout(function () {
+      if (JSON.stringify(firstMetadata) !== JSON.stringify(secondMetadata))
+        assert(true);
+      done();
+    }, 5000);
+
+    radio.on('metadata', metadata => {
+      if (JSON.stringify(firstMetadata) !== "{}") secondMetadata = metadata;
+      if (JSON.stringify(firstMetadata) === "{}") firstMetadata = metadata;
+    });
+  });
 });
