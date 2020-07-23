@@ -19,6 +19,7 @@ describe('RadioParser', () => {
       url: 'https://live.hunter.fm/80s_high',
       keepListen: false,
       autoUpdate: true,
+      notifyOnChangeOnly: false,
       errorInterval: 10 * 60,
       emptyInterval: 5 * 60,
       metadataInterval: 5,
@@ -30,6 +31,7 @@ describe('RadioParser', () => {
       userAgent: 'Not-Mozilla',
       keepListen: true,
       autoUpdate: false,
+      notifyOnChangeOnly: true,
       errorInterval: 1000,
       emptyInterval: 900,
       metadataInterval: 800
@@ -40,6 +42,7 @@ describe('RadioParser', () => {
       userAgent: 'Not-Mozilla',
       keepListen: true,
       autoUpdate: false,
+      notifyOnChangeOnly: true,
       errorInterval: 1000,
       emptyInterval: 900,
       metadataInterval: 800
@@ -54,6 +57,7 @@ describe('RadioParser', () => {
       userAgent: 'Not-Mozilla',
       keepListen: true,
       autoUpdate: false,
+      notifyOnChangeOnly: true,
       errorInterval: 1000,
       emptyInterval: 900,
       metadataInterval: 800
