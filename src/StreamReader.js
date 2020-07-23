@@ -48,7 +48,15 @@ const METADATA_REGEX = /(\w+)=['"](.+?)['"];/g;
  */
 const _parseMetadata = metadata => {
   const data = Buffer.isBuffer(metadata) ? metadata.toString('utf8') : metadata || '';
-  const parts = [...data.replace(/\0*$/, '').matchAll(METADATA_REGEX)];
+  const parts = [];
+  (function getParts () {
+    const string = data.replace(/\0*$/, '');
+    while (true) {
+      const result = METADATA_REGEX.exec(string);
+      if (!result) break;
+      parts.push(result);
+    }
+  }());
 
   return parts.reduce((metadata, item) => (metadata[item[1]] = String(item[2])) && metadata, {});
 };
