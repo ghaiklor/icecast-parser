@@ -38,7 +38,7 @@
     "lint": "eslint --fix .",
     "prepare": "npm run lint && npm run test",
     "preversion": "npm run lint && npm run test",
-    "test": "jest"
+    "test": "jest --forceExit"
   },
   "devDependencies": {
     "chai": "4.2.0",
