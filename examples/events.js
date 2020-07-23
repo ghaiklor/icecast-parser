@@ -4,7 +4,7 @@ const lame = require('lame');
 
 const speaker = new Speaker();
 const decoder = new lame.Decoder();
-const radioStation = new Parser({ url: 'https://live.hunter.fm/80s', keepListen: true });
+const radioStation = new Parser({ url: 'https://live.hunter.fm/80s_high', keepListen: true });
 
 radioStation.on('error', () => console.log(['Connection to', radioStation.getConfig('url'), 'was rejected'].join(' ')));
 radioStation.on('empty', () => console.log(['Radio station', radioStation.getConfig('url'), 'doesn\'t have metadata'].join(' ')));
