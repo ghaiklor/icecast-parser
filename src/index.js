@@ -34,7 +34,7 @@ class RadioParser extends EventEmitter {
       this.setConfig(options);
     }
 
-    this._previousMetadata = {};
+    this._previousMetadata = '';
 
     this.queueRequest();
   }
@@ -51,13 +51,14 @@ class RadioParser extends EventEmitter {
     if (icyMetaInt) {
       const reader = new StreamReader(icyMetaInt);
 
-      reader.on('metadata', (metadata) => {
+      reader.on('metadata', metadata => {
         this._destroyResponse(response);
         this._queueNextRequest(this.getConfig('metadataInterval'));
 
-        if (this.getConfig('notifyOnChangeOnly') === true && JSON.stringify(metadata) !== JSON.stringify(this._previousMetadata)) {
+        const newMetadata = JSON.stringify(metadata);
+        if (this.getConfig('notifyOnChangeOnly') === true && newMetadata !== this._previousMetadata) {
           this.emit('metadata', metadata);
-          this._previousMetadata = metadata;
+          this._previousMetadata = newMetadata;
           return;
         }
 
