@@ -54,7 +54,8 @@ You can provide additional parameters to constructor:
 - `url` - by default empty and **REQUIRED**.
 - `userAgent` - by default `Mozilla`. You can set userAgent from request.
 - `keepListen` - by default `false`. If you set to `true`, then response from radio station is not destroys and you can pipe it to another streams.
-- `autoUpdate` - by default `true`. If you set to `false`, then metadata will not be updates with interval and notify you about new metadata;
+- `autoUpdate` - by default `true`. If you set to `false`, then parser will not be listening for recent updates and immediately close the stream. So you will get a metadata only once.
+- `notifyOnChangeOnly` - by default `false`. If you set both `autoUpdate` and `notifyOnChangeOnly` to `true`, it will keep listening the stream and notifying you about metadata, but it will not notify if metadata did not change from the previous time.
 - `errorInterval` - by default `600` s. You can set interval in seconds when next try will be executed if connection was refused or rejected. Works only if `autoUpdate` is enabled.
 - `emptyInterval` - by default `300` s. You can set interval in seconds when next try will be executed if metadata is empty. Works only if `autoUpdate` is enabled.
 - `metadataInterval` - by default `5` s. You can set interval in seconds when will be next update of metadata. Works only if `autoUpdate` is enabled.
@@ -67,6 +68,7 @@ const radioStation = new Parser({
     userAgent: 'Parse-Icy', // userAgent to request
     keepListen: false, // don't listen radio station after metadata was received
     autoUpdate: true, // update metadata after interval
+    notifyOnChangeOnly: true, // notify if metadata really changed
     errorInterval: 10 * 60, // retry connection after 10 minutes
     emptyInterval: 5 * 60, // retry get metadata after 5 minutes
     metadataInterval: 5 // update metadata after 5 seconds

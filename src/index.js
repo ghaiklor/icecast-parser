@@ -13,6 +13,7 @@ const DEFAULT_OPTIONS = {
   userAgent: 'Mozilla',
   keepListen: false,
   autoUpdate: true,
+  notifyOnChangeOnly: false,
   errorInterval: 10 * 60,
   emptyInterval: 5 * 60,
   metadataInterval: 5
@@ -33,6 +34,8 @@ class RadioParser extends EventEmitter {
       this.setConfig(options);
     }
 
+    this._previousMetadata = '';
+
     this.queueRequest();
   }
 
@@ -51,7 +54,17 @@ class RadioParser extends EventEmitter {
       reader.on('metadata', metadata => {
         this._destroyResponse(response);
         this._queueNextRequest(this.getConfig('metadataInterval'));
-        this.emit('metadata', metadata);
+
+        const newMetadata = JSON.stringify(metadata);
+        if (this.getConfig('notifyOnChangeOnly') === true && newMetadata !== this._previousMetadata) {
+          this.emit('metadata', metadata);
+          this._previousMetadata = newMetadata;
+          return;
+        }
+
+        if (this.getConfig('notifyOnChangeOnly') === false) {
+          this.emit('metadata', metadata);
+        }
       });
 
       response.pipe(reader);
