@@ -1,7 +1,7 @@
 import { Transform } from 'stream';
 
 const METADATA_BLOCK_SIZE = 16;
-const METADATA_REGEX = /<?key(\w+)>=['"]<?value(.+?)>['"];/gu;
+const METADATA_REGEX = /(?<key>\w+)=['"](?<value>.+?)['"];/g;
 
 const enum STATES {
   INIT_STATE,
@@ -49,9 +49,11 @@ const processData = (stream: StreamReader, chunk: Buffer, done: TransformCallbac
   if (stream.bytesLeft === 0) {
     const cb = stream.callback;
 
-    let newChunk: Buffer = Buffer.from('');
     if (cb && stream.currentState === STATES.BUFFERING_STATE && stream.buffers.length > 1) {
-      newChunk = Buffer.concat(stream.buffers, stream.buffersLength);
+      chunk = Buffer.concat(stream.buffers, stream.buffersLength);
+    } else if (stream.currentState !== STATES.BUFFERING_STATE) {
+      // @ts-expect-error
+      chunk = null;
     }
 
     stream.currentState = STATES.INIT_STATE;
@@ -59,7 +61,7 @@ const processData = (stream: StreamReader, chunk: Buffer, done: TransformCallbac
     stream.buffers.splice(0);
     stream.buffersLength = 0;
 
-    cb?.call(stream, newChunk);
+    cb?.call(stream, chunk);
   }
 
   return done;
@@ -73,14 +75,12 @@ const onData = trampoline((stream: StreamReader, chunk: Buffer, done: TransformC
   return (): TransformCallback => {
     const buffer = chunk.slice(0, stream.bytesLeft);
 
+    // @ts-expect-error
     return processData(stream, buffer, (error): unknown => {
       if (error) return done(error);
-
       if (chunk.length > buffer.length) {
         return (): TransformCallback => onData(stream, chunk.slice(buffer.length), done);
       }
-
-      return done;
     });
   };
 });
