@@ -2,18 +2,10 @@
 
 ![Build Status](https://img.shields.io/travis/ghaiklor/icecast-parser.svg)
 ![Coverage](https://img.shields.io/coveralls/ghaiklor/icecast-parser.svg)
-
 ![Downloads](https://img.shields.io/npm/dm/icecast-parser.svg)
 ![Downloads](https://img.shields.io/npm/dt/icecast-parser.svg)
-![npm version](https://img.shields.io/npm/v/icecast-parser.svg)
-![License](https://img.shields.io/npm/l/icecast-parser.svg)
 
-[![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release)
-[![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
-![dependencies](https://img.shields.io/david/ghaiklor/icecast-parser.svg)
-![dev dependencies](https://img.shields.io/david/dev/ghaiklor/icecast-parser.svg)
-
-NodeJS module for getting and parsing metadata from SHOUTcast/Icecast radio streams.
+Node.js module for getting and parsing metadata from SHOUTcast/Icecast radio streams.
 
 ## Features
 
@@ -23,7 +15,7 @@ NodeJS module for getting and parsing metadata from SHOUTcast/Icecast radio stre
 - After metadata is received, connection to radio station closes automatically, so you will not spent a lot of traffic;
 - But you can set `keepListen` flag in config object and continue listening radio station;
 - Auto updating metadata from radio station by interval in economical way (connection is opens when time has come);
-- Metadata parsed as object with key-value;
+- Metadata parsed as a Map with key-value;
 - When you create new instance, you get EventEmitter. So you can subscribe to other events;
 - Easy to configure and use;
 
@@ -39,11 +31,10 @@ Get your first metadata from radio station.
 
 ```javascript
 const Parser = require('icecast-parser');
-
-const radioStation = new Parser('https://live.hunter.fm/80s');
+const radioStation = new Parser({ url: 'https://live.hunter.fm/80s_high' });
 
 radioStation.on('metadata', function(metadata) {
-    console.log([metadata.StreamTitle, 'is playing on', this.getConfig('url')].join(' '));
+    console.log([metadata.get('StreamTitle'), 'is playing on', this.getConfig('url')].join(' '));
 });
 ```
 

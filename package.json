@@ -2,7 +2,7 @@
   "name": "icecast-parser",
   "version": "3.2.1",
   "description": "Node.js module for getting and parsing metadata from SHOUTcast/Icecast radio streams",
-  "main": "src/index.js",
+  "main": "dist/index.js",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -18,7 +18,7 @@
     "email": "ghaiklor@gmail.com"
   },
   "engines": {
-    "node": ">= 12.0.0"
+    "node": ">=14"
   },
   "homepage": "https://github.com/ghaiklor/icecast-parser",
   "keywords": [
@@ -33,26 +33,30 @@
     "stream"
   ],
   "scripts": {
+    "all": "npm run clean && npm run build && npm run test && npm run lint",
+    "build": "tsc",
+    "clean": "rm -rf coverage dist",
     "commit": "git-cz",
     "coveralls": "cat coverage/lcov.info | coveralls",
     "lint": "eslint --fix .",
-    "prepare": "npm run lint && npm run test",
-    "preversion": "npm run lint && npm run test",
+    "prepublishOnly": "npm run all",
+    "preversion": "npm run all",
     "test": "jest --forceExit"
   },
   "devDependencies": {
-    "chai": "4.2.0",
+    "@types/jest": "26.0.10",
+    "@typescript-eslint/eslint-plugin": "3.9.1",
+    "@typescript-eslint/parser": "3.9.1",
     "coveralls": "3.1.0",
-    "eslint": "7.5.0",
-    "eslint-config-standard": "14.1.1",
+    "eslint": "7.7.0",
     "eslint-plugin-import": "2.22.0",
+    "eslint-plugin-jest": "23.20.0",
     "eslint-plugin-node": "11.1.0",
     "eslint-plugin-promise": "4.2.1",
     "eslint-plugin-standard": "4.0.1",
     "git-cz": "4.7.0",
-    "istanbul": "0.4.5",
-    "jest": "^26.1.0",
-    "mocha": "8.0.1",
-    "sinon": "9.0.2"
+    "jest": "26.1.0",
+    "ts-jest": "26.2.0",
+    "typescript": "4.0.2"
   }
 }
