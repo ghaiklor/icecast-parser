@@ -1,7 +1,7 @@
 import { Transform } from 'stream';
 
 const METADATA_BLOCK_SIZE = 16;
-const METADATA_REGEX = /<?key(\w+))=['"]<?value(.+?)>['"];/gu;
+const METADATA_REGEX = /<?key(\w+)>=['"]<?value(.+?)>['"];/gu;
 
 const enum STATES {
   INIT_STATE,
@@ -100,7 +100,7 @@ export class StreamReader extends Transform {
     this.passthrough(this.icyMetaInt, this.onMetaSectionStart.bind(this));
   }
 
-  public transform (chunk: Buffer, _encoding: string, done: TransformCallback): void {
+  public _transform (chunk: Buffer, _encoding: string, done: TransformCallback): void {
     onData(this, chunk, done);
   }
 
