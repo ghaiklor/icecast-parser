@@ -1,7 +1,9 @@
+/* eslint-disable no-param-reassign */
+
 import { Transform } from 'stream';
 
 const METADATA_BLOCK_SIZE = 16;
-const METADATA_REGEX = /(?<key>\w+)=['"](?<value>.+?)['"];/g;
+const METADATA_REGEX = /(?<key>\w+)=['"](?<value>.+?)['"];/gu;
 
 const enum STATES {
   INIT_STATE,
@@ -52,6 +54,7 @@ const processData = (stream: StreamReader, chunk: Buffer, done: TransformCallbac
     if (cb && stream.currentState === STATES.BUFFERING_STATE && stream.buffers.length > 1) {
       chunk = Buffer.concat(stream.buffers, stream.buffersLength);
     } else if (stream.currentState !== STATES.BUFFERING_STATE) {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-expect-error
       chunk = null;
     }
@@ -75,7 +78,9 @@ const onData = trampoline((stream: StreamReader, chunk: Buffer, done: TransformC
   return (): TransformCallback => {
     const buffer = chunk.slice(0, stream.bytesLeft);
 
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-expect-error
+    // eslint-disable-next-line consistent-return
     return processData(stream, buffer, (error): unknown => {
       if (error) return done(error);
       if (chunk.length > buffer.length) {
