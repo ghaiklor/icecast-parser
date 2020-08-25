@@ -7,8 +7,8 @@ describe('radioParser', () => {
     const radio = new RadioParser({ url: 'https://live.hunter.fm/80s_high' });
 
     await new Promise((resolve) => {
-      radio.on('metadata', (metadata) => {
-        expect(metadata).toMatchObject({ StreamTitle: expect.any(String) });
+      radio.on('metadata', (metadata: Map<string, string>) => {
+        expect(metadata.get('StreamTitle')).toStrictEqual(expect.any(String));
         resolve();
       });
     });
