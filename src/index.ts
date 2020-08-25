@@ -24,7 +24,7 @@ export class RadioParser extends EventEmitter {
     metadataInterval: 5,
     notifyOnChangeOnly: false,
     url: '',
-    userAgent: 'icecast-parser'
+    userAgent: 'icecast-parser',
   };
 
   public constructor (options: Partial<Options>) {
