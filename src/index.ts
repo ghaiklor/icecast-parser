@@ -44,7 +44,7 @@ export class RadioParser extends EventEmitter {
     } else {
       const reader = new StreamReader(Array.isArray(icyMetaInt) ? Number(icyMetaInt[0]) : Number(icyMetaInt));
 
-      reader.on('metadata', (metadata) => {
+      reader.on('metadata', (metadata: Map<string, string>) => {
         this.destroyResponse(response);
         this.queueNextRequest(this.options.metadataInterval);
 
@@ -52,6 +52,7 @@ export class RadioParser extends EventEmitter {
         if (this.options.notifyOnChangeOnly && newMetadata !== this.previousMetadata) {
           this.emit('metadata', metadata);
           this.previousMetadata = newMetadata;
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         } else if (!this.options.notifyOnChangeOnly) {
           this.emit('metadata', metadata);
         }
@@ -87,12 +88,14 @@ export class RadioParser extends EventEmitter {
   }
 
   protected destroyResponse (response: http.IncomingMessage): void {
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (!this.options.keepListen) {
       response.destroy();
     }
   }
 
   protected queueNextRequest (timeout: number): void {
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (this.options.autoUpdate && !this.options.keepListen) {
       this.queueRequest(timeout);
     }

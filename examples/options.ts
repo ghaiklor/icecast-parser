@@ -6,8 +6,11 @@ const radioStation = new RadioParser({
   errorInterval: 10 * 60,
   keepListen: false,
   metadataInterval: 5,
-  notifyOnChangeOnly: true,
+  notifyOnChangeOnly: false,
   url: 'https://live.hunter.fm/80s_high'
 });
 
-radioStation.on('metadata', (metadata: Map<string, string>) => process.stdout.write(metadata.get('StreamTitle')));
+radioStation.on(
+  'metadata',
+  (metadata: Map<string, string>) => process.stdout.write(`${metadata.get('StreamTitle') ?? 'unknown'}\n`)
+);
