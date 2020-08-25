@@ -1,5 +1,6 @@
-const Parser = require('..');
-const radioStation = new Parser({
+import { RadioParser } from '..';
+
+const radioStation = new RadioParser({
   autoUpdate: true,
   emptyInterval: 5 * 60,
   errorInterval: 10 * 60,
@@ -9,4 +10,4 @@ const radioStation = new Parser({
   url: 'https://live.hunter.fm/80s_high'
 });
 
-radioStation.on('metadata', (metadata) => console.log(metadata.StreamTitle));
+radioStation.on('metadata', (metadata: Map<string, string>) => process.stdout.write(metadata.get('StreamTitle')));
