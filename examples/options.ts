@@ -1,6 +1,6 @@
-import { RadioParser } from '..';
+import { Parser } from '..';
 
-const radioStation = new RadioParser({
+const radioStation = new Parser({
   autoUpdate: true,
   emptyInterval: 5 * 60,
   errorInterval: 10 * 60,
@@ -8,6 +8,7 @@ const radioStation = new RadioParser({
   metadataInterval: 5,
   notifyOnChangeOnly: false,
   url: 'https://live.hunter.fm/80s_high',
+  userAgent: 'Custom User Agent',
 });
 
 radioStation.on(
