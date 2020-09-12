@@ -2,7 +2,7 @@ module.exports = {
   collectCoverage: true,
   coverageDirectory: 'coverage',
   coverageProvider: 'v8',
-  coverageReporters: ['json', 'text', 'lcov', 'clover'],
+  coverageReporters: ['json', 'lcov', 'clover'],
   errorOnDeprecated: true,
   preset: 'ts-jest',
   slowTestThreshold: 10,
