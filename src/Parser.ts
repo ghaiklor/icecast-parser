@@ -3,20 +3,20 @@ import { StreamReader } from './StreamReader';
 import http from 'http';
 import https from 'https';
 
-export interface Options {
-  autoUpdate: boolean;
-  emptyInterval: number;
-  errorInterval: number;
-  keepListen: boolean;
-  metadataInterval: number;
-  notifyOnChangeOnly: boolean;
-  url: string;
-  userAgent: string;
+export interface ParserOptions {
+  autoUpdate: boolean
+  emptyInterval: number
+  errorInterval: number
+  keepListen: boolean
+  metadataInterval: number
+  notifyOnChangeOnly: boolean
+  url: string
+  userAgent: string
 }
 
-export class RadioParser extends EventEmitter {
+export class Parser extends EventEmitter {
   private previousMetadata = '';
-  private readonly options: Options = {
+  private readonly options: ParserOptions = {
     autoUpdate: true,
     emptyInterval: 5 * 60,
     errorInterval: 10 * 60,
@@ -27,7 +27,7 @@ export class RadioParser extends EventEmitter {
     userAgent: 'icecast-parser',
   };
 
-  public constructor (options: Partial<Options>) {
+  public constructor (options: Partial<ParserOptions>) {
     super();
 
     this.options = { ...this.options, ...options };
@@ -52,7 +52,6 @@ export class RadioParser extends EventEmitter {
         if (this.options.notifyOnChangeOnly && newMetadata !== this.previousMetadata) {
           this.emit('metadata', metadata);
           this.previousMetadata = newMetadata;
-        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         } else if (!this.options.notifyOnChangeOnly) {
           this.emit('metadata', metadata);
         }
@@ -88,14 +87,12 @@ export class RadioParser extends EventEmitter {
   }
 
   protected destroyResponse (response: http.IncomingMessage): void {
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (!this.options.keepListen) {
       response.destroy();
     }
   }
 
   protected queueNextRequest (timeout: number): void {
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (this.options.autoUpdate && !this.options.keepListen) {
       this.queueRequest(timeout);
     }

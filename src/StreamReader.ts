@@ -1,6 +1,7 @@
-/* eslint-disable no-param-reassign */
-
 import { Transform } from 'stream';
+
+export type Trampoline<T> = T | ((...args: never[]) => Trampoline<T>);
+export type TransformCallback = (error: Error | null | undefined, data?: Buffer) => void;
 
 const METADATA_BLOCK_SIZE = 16;
 const METADATA_REGEX = /(?<key>\w+)=['"](?<value>.+?)['"];/gu;
@@ -11,18 +12,15 @@ const enum STATES {
   PASSTHROUGH_STATE
 }
 
-type Trampoline<T> = T | ((...args: never[]) => Trampoline<T>);
-type TransformCallback = (error: Error | null, data?: Buffer) => void;
-
-const parseMetadata = (metadata: Buffer | string): Map<string, string> => {
+function parseMetadata (metadata: Buffer): Map<string, string> {
   const map = new Map<string, string>();
-  const data = Buffer.isBuffer(metadata) ? metadata.toString('utf8') : metadata || '';
+  const data = metadata.toString('utf8');
   const parts = [...data.replace(/\0*$/u, '').matchAll(METADATA_REGEX)];
 
   parts.forEach((part) => map.set(part.groups?.key ?? '', part.groups?.value ?? ''));
 
   return map;
-};
+}
 
 function trampoline <
   T,
@@ -32,13 +30,16 @@ function trampoline <
 > (fn: F): (...args: Parameters<F>) => ReturnType<F> {
   return function executor (...args: Parameters<F>): ReturnType<F> {
     let result = fn(...args);
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    while (typeof result === 'function') result = result();
+
+    while (typeof result === 'function') {
+      result = result() as ReturnType<F>;
+    }
+
     return result as ReturnType<F>;
   };
 }
 
-const processData = (stream: StreamReader, chunk: Buffer, done: TransformCallback): TransformCallback => {
+function processData (stream: StreamReader, chunk: Buffer, done: TransformCallback): TransformCallback {
   stream.bytesLeft -= chunk.length;
 
   if (stream.currentState === STATES.BUFFERING_STATE) {
@@ -49,26 +50,21 @@ const processData = (stream: StreamReader, chunk: Buffer, done: TransformCallbac
   }
 
   if (stream.bytesLeft === 0) {
-    const cb = stream.callback;
-
-    if (cb && stream.currentState === STATES.BUFFERING_STATE && stream.buffers.length > 1) {
-      chunk = Buffer.concat(stream.buffers, stream.buffersLength);
-    } else if (stream.currentState !== STATES.BUFFERING_STATE) {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-expect-error
-      chunk = null;
-    }
+    const { callback } = stream;
+    const chunkToPass = stream.currentState === STATES.BUFFERING_STATE && stream.buffers.length > 1
+      ? Buffer.concat(stream.buffers, stream.buffersLength)
+      : chunk;
 
     stream.currentState = STATES.INIT_STATE;
     stream.callback = null;
     stream.buffers.splice(0);
     stream.buffersLength = 0;
 
-    cb?.call(stream, chunk);
+    callback?.call(stream, chunkToPass);
   }
 
   return done;
-};
+}
 
 const onData = trampoline((stream: StreamReader, chunk: Buffer, done: TransformCallback): () => TransformCallback => {
   if (chunk.length <= stream.bytesLeft) {
@@ -78,11 +74,8 @@ const onData = trampoline((stream: StreamReader, chunk: Buffer, done: TransformC
   return (): TransformCallback => {
     const buffer = chunk.slice(0, stream.bytesLeft);
 
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-expect-error
-    // eslint-disable-next-line consistent-return
-    return processData(stream, buffer, (error): unknown => {
-      if (error) return done(error);
+    return processData(stream, buffer, (error) => {
+      if (error !== null && typeof error !== 'undefined') return done(error);
       if (chunk.length > buffer.length) {
         return (): TransformCallback => onData(stream, chunk.slice(buffer.length), done);
       }
@@ -109,20 +102,16 @@ export class StreamReader extends Transform {
     onData(this, chunk, done);
   }
 
-  protected bytes (length: number, cb: (chunk: Buffer) => void): this {
+  protected bytes (length: number, cb: (chunk: Buffer) => void): void {
     this.bytesLeft = length;
     this.currentState = STATES.BUFFERING_STATE;
     this.callback = cb;
-
-    return this;
   }
 
-  protected passthrough (length: number, cb: (chunk: Buffer) => void): this {
+  protected passthrough (length: number, cb: (chunk: Buffer) => void): void {
     this.bytesLeft = length;
     this.currentState = STATES.PASSTHROUGH_STATE;
     this.callback = cb;
-
-    return this;
   }
 
   protected onMetaSectionStart (): void {

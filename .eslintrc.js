@@ -42,6 +42,7 @@ module.exports = {
     'array-bracket-newline': ['error', 'consistent'],
     'array-element-newline': ['error', 'consistent'],
     'comma-dangle': ['error', 'always-multiline'],
+    'consistent-return': ['off'],
     'func-style': ['off'],
     'function-call-argument-newline': ['error', 'consistent'],
     'function-paren-newline': ['error', 'consistent'],
