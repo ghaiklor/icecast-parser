@@ -33,6 +33,7 @@ module.exports = {
   rules: {
     '@typescript-eslint/indent': ['error', 2],
     '@typescript-eslint/no-magic-numbers': ['off'],
+    '@typescript-eslint/no-shadow': ['off'],
     '@typescript-eslint/no-type-alias': ['off'],
     '@typescript-eslint/prefer-enum-initializers': ['off'],
     '@typescript-eslint/prefer-readonly-parameter-types': ['off'],
@@ -45,6 +46,7 @@ module.exports = {
     'function-call-argument-newline': ['error', 'consistent'],
     'function-paren-newline': ['error', 'consistent'],
     'max-len': ['error', 120],
+    'max-lines-per-function': ['off'],
     'max-statements': ['off'],
     'multiline-ternary': ['error', 'always-multiline'],
     'no-ternary': ['off'],
