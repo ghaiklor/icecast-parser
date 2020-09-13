@@ -11,7 +11,4 @@ const radioStation = new Parser({
   userAgent: 'Custom User Agent',
 });
 
-radioStation.on(
-  'metadata',
-  (metadata: Map<string, string>) => process.stdout.write(`${metadata.get('StreamTitle') ?? 'unknown'}\n`),
-);
+radioStation.on('metadata', (metadata) => process.stdout.write(`${metadata.get('StreamTitle') ?? 'unknown'}\n`));

@@ -14,6 +14,19 @@ export interface ParserOptions {
   userAgent: string
 }
 
+export interface ParserEvents {
+  'empty': () => void
+  'end': () => void
+  'error': (error: Error) => void
+  'metadata': (metadata: Map<string, string>) => void
+  'stream': (stream: StreamReader) => void
+}
+
+export declare interface Parser {
+  emit: <T extends keyof ParserEvents>(event: T, ...args: Parameters<ParserEvents[T]>) => boolean
+  on: <T extends keyof ParserEvents>(event: T, listener: ParserEvents[T]) => this
+}
+
 export class Parser extends EventEmitter {
   private previousMetadata = '';
   private readonly options: ParserOptions = {
