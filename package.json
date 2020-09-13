@@ -38,6 +38,7 @@
   "scripts": {
     "all": "npm run clean && npm run build && npm run test && npm run lint",
     "build": "tsc",
+    "changelog": "standard-changelog -i CHANGELOG.md --same-file",
     "clean": "rm -rf coverage dist",
     "commit": "git-cz",
     "coveralls": "cat coverage/lcov.info | coveralls",
@@ -60,6 +61,7 @@
     "eslint-plugin-standard": "4.0.1",
     "git-cz": "4.7.1",
     "jest": "26.4.2",
+    "standard-changelog": "2.0.24",
     "ts-jest": "26.3.0",
     "typescript": "4.0.2"
   }
