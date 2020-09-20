@@ -49,6 +49,7 @@ module.exports = {
     'max-len': ['error', 120],
     'max-lines-per-function': ['off'],
     'max-statements': ['off'],
+    'multiline-comment-style': ['error', 'separate-lines'],
     'multiline-ternary': ['error', 'always-multiline'],
     'no-ternary': ['off'],
     'node/no-missing-import': ['error', { tryExtensions: ['.ts'] }],

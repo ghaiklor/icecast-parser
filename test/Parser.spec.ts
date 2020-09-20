@@ -53,4 +53,15 @@ describe('parser', () => {
       resolve();
     });
   }));
+
+  it('should properly emit metadata event when metadata has been updated', async () => await new Promise((resolve) => {
+    expect.hasAssertions();
+
+    const radio = new Parser({ autoUpdate: false, notifyOnChangeOnly: true, url: 'https://live.hunter.fm/80s_high' });
+    radio.on('metadata', (metadata) => {
+      // @ts-expect-error I want to check that metadata was stored in the private property to later comparsion
+      expect(radio.previousMetadata).toStrictEqual(metadata);
+      resolve();
+    });
+  }));
 });

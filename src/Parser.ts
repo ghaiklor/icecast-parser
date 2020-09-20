@@ -28,7 +28,7 @@ export declare interface Parser {
 }
 
 export class Parser extends EventEmitter {
-  private previousMetadata = '';
+  private previousMetadata: Map<string, string> = new Map<string, string>();
   private readonly options: ParserOptions = {
     autoUpdate: true,
     emptyInterval: 5 * 60,
@@ -61,10 +61,9 @@ export class Parser extends EventEmitter {
         this.destroyResponse(response);
         this.queueNextRequest(this.options.metadataInterval);
 
-        const newMetadata = JSON.stringify(metadata);
-        if (this.options.notifyOnChangeOnly && newMetadata !== this.previousMetadata) {
+        if (this.options.notifyOnChangeOnly && this.isMetadataChanged(metadata)) {
+          this.previousMetadata = metadata;
           this.emit('metadata', metadata);
-          this.previousMetadata = newMetadata;
         } else if (!this.options.notifyOnChangeOnly) {
           this.emit('metadata', metadata);
         }
@@ -113,5 +112,15 @@ export class Parser extends EventEmitter {
 
   protected queueRequest (timeout = 0): void {
     setTimeout(this.makeRequest.bind(this), timeout * 1000);
+  }
+
+  protected isMetadataChanged (metadata: Map<string, string>): boolean {
+    for (const [key, value] of metadata.entries()) {
+      if (this.previousMetadata.get(key) !== value) {
+        return true;
+      }
+    }
+
+    return false;
   }
 }
