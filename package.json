@@ -62,7 +62,7 @@
     "git-cz": "4.7.1",
     "jest": "26.4.2",
     "standard-changelog": "2.0.24",
-    "ts-jest": "26.3.0",
+    "ts-jest": "26.4.0",
     "typescript": "4.0.3"
   }
 }
