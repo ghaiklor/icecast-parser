@@ -1,9 +1,7 @@
 # icecast-parser
 
-![Build Status](https://img.shields.io/travis/ghaiklor/icecast-parser.svg)
-![Coverage](https://img.shields.io/coveralls/ghaiklor/icecast-parser.svg)
-![Downloads](https://img.shields.io/npm/dm/icecast-parser.svg)
-![Downloads](https://img.shields.io/npm/dt/icecast-parser.svg)
+[![Build Status](https://travis-ci.com/ghaiklor/icecast-parser.svg?branch=master)](https://travis-ci.com/ghaiklor/icecast-parser)
+[![Code Coverage](https://codecov.io/gh/ghaiklor/icecast-parser/branch/master/graph/badge.svg)](https://codecov.io/gh/ghaiklor/icecast-parser)
 
 Node.js module for getting and parsing metadata from SHOUTcast/Icecast radio streams.
 
