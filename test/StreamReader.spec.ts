@@ -1,6 +1,33 @@
 import { StreamReader } from '../src/StreamReader';
 
 describe('stream reader', () => {
+  it('should properly parse stream data, when there is no metadata at all', async () => await new Promise((resolve) => {
+    expect.hasAssertions();
+
+    const reader = new StreamReader(1);
+    const data = 'f\0a\0k\0e\x01\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0 \0d\0a\0t\0a';
+
+    let output = '';
+    let isMetadataFired = false;
+
+    reader.on('metadata', (metadata: Map<string, string>) => {
+      expect(metadata.size).toBe(0);
+      isMetadataFired = true;
+    });
+
+    reader.on('data', (data: string) => {
+      output += data;
+    });
+
+    reader.on('end', () => {
+      expect(isMetadataFired).toBe(true);
+      expect(output).toBe('fake data');
+      resolve();
+    });
+
+    reader.end(data);
+  }));
+
   it('should properly parse stream data', async () => await new Promise((resolve) => {
     expect.hasAssertions();
 
