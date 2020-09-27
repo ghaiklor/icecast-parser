@@ -3,6 +3,9 @@
 [![Build Status](https://travis-ci.com/ghaiklor/icecast-parser.svg?branch=master)](https://travis-ci.com/ghaiklor/icecast-parser)
 [![Code Coverage](https://codecov.io/gh/ghaiklor/icecast-parser/branch/master/graph/badge.svg)](https://codecov.io/gh/ghaiklor/icecast-parser)
 
+[![GitHub followers](https://img.shields.io/github/followers/ghaiklor?label=Follow&style=social)](https://github.com/ghaiklor)
+[![Twitter Follow](https://img.shields.io/twitter/follow/ghaiklor?label=Follow&style=social)](https://twitter.com/ghaiklor)
+
 Node.js module for getting and parsing metadata from SHOUTcast/Icecast radio streams.
 
 *NOTE: the server that serves radio station stream must support `Icy-Metadata` header. If that is not the case, this parser cannot parse the metadata from there.*
