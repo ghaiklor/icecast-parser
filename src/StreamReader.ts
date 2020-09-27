@@ -9,7 +9,7 @@ const METADATA_REGEX = /(?<key>\w+)=['"](?<value>.+?)['"];/gu;
 const enum STATES {
   INIT_STATE,
   BUFFERING_STATE,
-  PASSTHROUGH_STATE
+  PASSTHROUGH_STATE,
 }
 
 function parseMetadata (metadata: Buffer): Map<string, string> {
@@ -26,7 +26,7 @@ function trampoline <
   T,
   P extends never[],
   R extends Trampoline<T>,
-  F extends (...args: P) => R
+  F extends (...args: P) => R,
 > (fn: F): (...args: Parameters<F>) => ReturnType<F> {
   return function executor (...args: Parameters<F>): ReturnType<F> {
     let result = fn(...args);

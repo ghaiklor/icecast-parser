@@ -31,6 +31,7 @@ module.exports = {
   ],
   root: true,
   rules: {
+    '@typescript-eslint/comma-dangle': ['error', 'always-multiline'],
     '@typescript-eslint/indent': ['error', 2],
     '@typescript-eslint/no-magic-numbers': ['off'],
     '@typescript-eslint/no-shadow': ['off'],
