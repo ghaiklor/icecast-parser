@@ -6,21 +6,18 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/ghaiklor/icecast-parser.git"
+    "url": "https://github.com/Beastlybear2017/icecast-parser.git"
   },
   "author": {
     "name": "Eugene Obrezkov",
-    "email": "ghaiklor@gmail.com",
-    "url": "https://ghaiklor.com"
   },
   "bugs": {
-    "url": "https://github.com/ghaiklor/icecast-parser/issues",
-    "email": "ghaiklor@gmail.com"
+    "url": "https://github.com/Beastlybear2017/icecast-parser/issues"
   },
   "engines": {
     "node": ">=14"
   },
-  "homepage": "https://github.com/ghaiklor/icecast-parser",
+  "homepage": "https://github.com/Beastlybear2017/icecast-parser",
   "keywords": [
     "shoutcast",
     "SHOUTcast",
