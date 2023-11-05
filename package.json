@@ -1,6 +1,6 @@
 {
-  "name": "icecast-parser",
-  "version": "4.0.2",
+  "name": "icecast-parser2",
+  "version": "4.0.3",
   "description": "Node.js module for getting and parsing metadata from SHOUTcast/Icecast radio streams",
   "main": "dist/Parser.js",
   "license": "MIT",
