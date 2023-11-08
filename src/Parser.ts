@@ -9,7 +9,7 @@ export interface ParserOptions {
   errorInterval: number
   keepListen: boolean
   metadataInterval: number
-  notifyOnChangeOnly: list
+  notifyOnChangeOnly: []
   url: string
   userAgent: string
 }
@@ -61,10 +61,10 @@ export class Parser extends EventEmitter {
         this.destroyResponse(response);
         this.queueNextRequest(this.options.metadataInterval);
 
-        if (this.options.notifyOnChangeOnly !== [] && this.isMetadataChanged(metadata)) {
+        if (this.options.notifyOnChangeOnly && this.isMetadataChanged(metadata)) {
           this.previousMetadata = metadata;
           this.emit('metadata', metadata);
-        } else if (!this.options.notifyOnChangeOnly == []) {
+        } else if (!this.options.notifyOnChangeOnly) {
           this.emit('metadata', metadata);
         }
       });
@@ -115,10 +115,20 @@ export class Parser extends EventEmitter {
   }
 
   protected isMetadataChanged (metadata: Map<string, string>): boolean {
-    for (const key of this.notifyOnChangeOnly) {
-      if (this.previousMetadata.get(key) !== value) {
-        return true;
+    if (this.options.notifyOnChangeOnly.length > 0) {
+      for (const key of this.options.notifyOnChangeOnly) {
+        const data = metadata.get(key)
+        if (data) {
+          if (this.previousMetadata.get(key) !== data[0])
+          return true
+        }
       }
+    } else {
+      for (const [key, value] of metadata.entries()) {
+        if (this.previousMetadata.get(key) !== value) {
+          return true;
+        }
+      }      
     }
 
     return false;
