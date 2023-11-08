@@ -1,23 +1,26 @@
 {
-  "name": "icecast-parser2",
+  "name": "icecast-parser",
   "version": "4.0.3",
   "description": "Node.js module for getting and parsing metadata from SHOUTcast/Icecast radio streams",
   "main": "dist/Parser.js",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Beastlybear2017/icecast-parser.git"
+    "url": "https://github.com/ghaiklor/icecast-parser.git"
   },
   "author": {
     "name": "Eugene Obrezkov",
+    "email": "ghaiklor@gmail.com",
+    "url": "https://ghaiklor.com"
   },
   "bugs": {
-    "url": "https://github.com/Beastlybear2017/icecast-parser/issues"
+    "url": "https://github.com/ghaiklor/icecast-parser/issues",
+    "email": "ghaiklor@gmail.com"
   },
   "engines": {
     "node": ">=14"
   },
-  "homepage": "https://github.com/Beastlybear2017/icecast-parser",
+  "homepage": "https://github.com/ghaiklor/icecast-parser",
   "keywords": [
     "shoutcast",
     "SHOUTcast",
