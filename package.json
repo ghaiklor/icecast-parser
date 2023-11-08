@@ -33,7 +33,7 @@
     "stream"
   ],
   "files": [
-    "src"
+    "dist"
   ],
   "scripts": {
     "all": "npm run clean && npm run build && npm run test && npm run lint",
