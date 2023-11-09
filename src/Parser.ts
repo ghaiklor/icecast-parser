@@ -119,7 +119,7 @@ export class Parser extends EventEmitter {
       for (const key of this.options.notifyOnChangeOnly) {
         const data = metadata.get(key)
         if (data) {
-          if (this.previousMetadata.get(key) !== data[0]) {
+          if (this.previousMetadata.get(key) !== data) {
             return true;
           }
         }
