@@ -1,7 +1,7 @@
 import { Parser } from '../src/Parser';
 
 describe('parser', () => {
-  it('should properly emit metadata event from the radio', async () => await new Promise<void>((resolve) => {
+  it('should properly emit metadata event from the radio', async () => await new Promise((resolve) => {
     expect.hasAssertions();
 
     const radio = new Parser({ autoUpdate: false, url: 'https://live.hunter.fm/80s_high' });
@@ -13,7 +13,7 @@ describe('parser', () => {
     });
   }));
 
-  it('should properly emit empty event from the radio when no support', async () => await new Promise<void>((resolve) => {
+  it('should properly emit empty event from the radio when no support', async () => await new Promise((resolve) => {
     expect.hasAssertions();
 
     let isMetadataFired = false;
@@ -30,7 +30,7 @@ describe('parser', () => {
     });
   }));
 
-  it('should properly emit error event if request has failed', async () => await new Promise<void>((resolve) => {
+  it('should properly emit error event if request has failed', async () => await new Promise((resolve) => {
     expect.hasAssertions();
 
     let isMetadataFired = false;
@@ -54,7 +54,7 @@ describe('parser', () => {
     });
   }));
 
-  it('should properly emit metadata event when metadata has been updated', async () => await new Promise<void>((resolve) => {
+  it('should properly emit metadata event when metadata has been updated', async () => await new Promise((resolve) => {
     expect.hasAssertions();
 
     const radio = new Parser({ autoUpdate: false, notifyOnChangeOnly: [], url: 'https://live.hunter.fm/80s_high' });
@@ -65,7 +65,7 @@ describe('parser', () => {
     });
   }));
 
-  it('should properly emit metadata event when notifyOnChangeOnly is used and when metadata has been updated', async () => await new Promise<void>((resolve) => {
+  it('should properly emit metadata event when notifyOnChangeOnly is used and when metadata has been updated', async () => await new Promise((resolve) => {
     expect.hasAssertions()
 
     const radio = new Parser({ autoUpdate: false, notifyOnChangeOnly: ['StreamTitle'], url: 'https://live.hunter.fm/80s_high' });
@@ -76,7 +76,7 @@ describe('parser', () => {
     });
   }))
 
-  it('should not emmit metadata event if notifyOnChangeOnly is incorrect', async () => await new Promise<void>(async (resolve) => {
+  it('should not emmit metadata event if notifyOnChangeOnly is incorrect', async () => await new Promise(async (resolve) => {
     let triggered = false
     const delay = (ms: number) => new Promise(res => setTimeout(res, ms));
 
