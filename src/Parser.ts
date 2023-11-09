@@ -131,7 +131,6 @@ export class Parser extends EventEmitter {
         }
       }      
     }
-    
     return false;
   }
 }
