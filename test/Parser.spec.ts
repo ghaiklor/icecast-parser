@@ -77,7 +77,6 @@ describe('parser', () => {
   }))
 
   it('should not emmit metadata event if notifyOnChangeOnly is incorrect', async () => await new Promise<void>(async (resolve) => {
-    // expect.hasAssertions()
     let triggered = false
     const delay = (ms: number) => new Promise(res => setTimeout(res, ms));
 
