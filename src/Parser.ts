@@ -9,7 +9,7 @@ export interface ParserOptions {
   errorInterval: number
   keepListen: boolean
   metadataInterval: number
-  notifyOnChangeOnly: []
+  notifyOnChangeOnly: string[]
   url: string
   userAgent: string
 }
@@ -119,8 +119,9 @@ export class Parser extends EventEmitter {
       for (const key of this.options.notifyOnChangeOnly) {
         const data = metadata.get(key)
         if (data) {
-          if (this.previousMetadata.get(key) !== data[0])
-          return true
+          if (this.previousMetadata.get(key) !== data[0]) {
+            return true;
+          }
         }
       }
     } else {
@@ -130,7 +131,7 @@ export class Parser extends EventEmitter {
         }
       }      
     }
-
+    
     return false;
   }
 }
