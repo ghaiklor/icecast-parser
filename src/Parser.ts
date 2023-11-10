@@ -9,7 +9,7 @@ export interface ParserOptions {
   errorInterval: number
   keepListen: boolean
   metadataInterval: number
-  notifyOnChangeOnly: boolean
+  notifyOnChangeOnly: string[]
   url: string
   userAgent: string
 }
@@ -35,7 +35,7 @@ export class Parser extends EventEmitter {
     errorInterval: 10 * 60,
     keepListen: false,
     metadataInterval: 5,
-    notifyOnChangeOnly: false,
+    notifyOnChangeOnly: [],
     url: '',
     userAgent: 'icecast-parser',
   };
@@ -115,12 +115,22 @@ export class Parser extends EventEmitter {
   }
 
   protected isMetadataChanged (metadata: Map<string, string>): boolean {
-    for (const [key, value] of metadata.entries()) {
-      if (this.previousMetadata.get(key) !== value) {
-        return true;
+    if (this.options.notifyOnChangeOnly.length > 0) {
+      for (const key of this.options.notifyOnChangeOnly) {
+        const data = metadata.get(key)
+        if (data) {
+          if (this.previousMetadata.get(key) !== data) {
+            return true;
+          }
+        }
       }
+    } else {
+      for (const [key, value] of metadata.entries()) {
+        if (this.previousMetadata.get(key) !== value) {
+          return true;
+        }
+      }      
     }
-
     return false;
   }
 }
