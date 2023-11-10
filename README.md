@@ -47,7 +47,7 @@ You can provide additional parameters to constructor:
 - `userAgent` - by default `icecast-parser`.
 - `keepListen` - by default `false`. If you set to `true`, then response from radio station will not be destroyed and you can pipe it to another streams. E.g. piping it to the `speaker` module.
 - `autoUpdate` - by default `true`. If you set to `false`, then parser will not be listening for recent updates and immediately close the stream. So that, you will get a metadata only once.
-- `notifyOnChangeOnly` - by default `false`. If you set both `autoUpdate` and `notifyOnChangeOnly` to `true`, it will keep listening the stream and notifying you about metadata, but it will not notify if metadata did not change from the previous time.
+- `notifyOnChangeOnly` - by default `[]`. If you set both `autoUpdate` to `true` and `notifyOnChangeOnly` to include the a list of metadata keys to listen for (`['StreamTitle', 'StreamUrl']`), it will keep listening the stream and notifying you about metadata, but it will not notify if the selected metadata did not change from the previous time.
 - `errorInterval` - by default 10 minutes. If an error occurred when requesting, the next try will be executed after this interval. Works only if `autoUpdate` is enabled.
 - `emptyInterval` - by default 5 minutes. If the request was fullfiled but the metadata field was empty, the next try will be executed after this interval. Works only if `autoUpdate` is enabled.
 - `metadataInterval` - by default 5 seconds. If the request was fullfiled and the metadata was present, the next update will be scheduled after this interval. Works only if `autoUpdate` is enabled.
@@ -61,7 +61,7 @@ const radioStation = new Parser({
   errorInterval: 10 * 60,
   keepListen: false,
   metadataInterval: 5,
-  notifyOnChangeOnly: false,
+  notifyOnChangeOnly: [],
   url: 'https://live.hunter.fm/80s_high',
   userAgent: 'Custom User Agent',
 });
